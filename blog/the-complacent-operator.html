@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Complacent Operator: Designing the Human-Digital Handshake | Domonick Thompson</title>
+<meta name="description" content="An engineer overrides a safety shutdown because he thinks a sensor is glitchy. The fix isn&#x27;t more training. It&#x27;s removing single-person discretion.">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="../index.html">Domonick Thompson</a>
+  <nav><a href="../index.html">Home</a><a href="../blog/index.html" aria-current="page">Blog</a><a href="../about.html">About</a></nav>
+</header>
+<main>
+<article class="post">
+
+<p class="meta">September 29, 2026 &middot; Challenge 05 <span class="tag">Energy</span><span class="tag">Simulated scenario</span></p>
+<h1>The Complacent Operator: Designing the Human-Digital Handshake</h1>
+<blockquote>
+<p>Automation detects. Accountable people resolve, together and with evidence.</p>
+</blockquote>
+<h2>What happened</h2>
+<p><em>This is a simulated scenario I designed for practice. It follows on from the power grid dependency.</em></p>
+<p>The independent heat sensors from the previous challenge do their job. They disagree with the control system and put the grid into its safe state. A junior engineer decides the sensor is &ldquo;glitchy&rdquo; and switches the system back to automatic mode, even though the risk is still high.</p>
+<h2>The technician&rsquo;s view</h2>
+<p>The engineer made a mistake or didn&rsquo;t understand the risk. Give staff more training, or add a warning pop-up before an override.</p>
+<p>People click through warning pop-ups. Training fades. Neither changes the fact that one person, going on a hunch, could switch off a safety system.</p>
+<h2>The architect&rsquo;s view</h2>
+<p>This is a <strong>permission failure</strong>. The process gave a single person too much discretion, and it gave him nothing objective to judge the sensor with. &ldquo;Glitchy&rdquo; was an opinion, not a measurement.</p>
+<h2>The control: Quorum Override with an Accountability Record</h2>
+<ol>
+<li><strong>Evidence-backed quorum:</strong> an override needs three people to sign: the operator, a technical authority and a risk officer. They must attach physical evidence, such as photos of the gauges.</li>
+<li><strong>Sensor confidence scores:</strong> each sensor carries a score based on its calibration history, signal noise and track record. When a high-confidence sensor disagrees with the control system, overriding it takes more evidence, not less.</li>
+<li><strong>Permanent record:</strong> every override is logged in a record that can&rsquo;t be edited. The signers explicitly acknowledge that they&rsquo;re choosing the software&rsquo;s reading over the physical one.</li>
+</ol>
+<h2>How to prove it works</h2>
+<p>Pull the override log. Every entry should show three distinct signers, attached evidence and the sensor&rsquo;s confidence score at the time. Then try overriding with one signature in a test environment and confirm it&rsquo;s refused.</p>
+<h2>Takeaway</h2>
+<p>Don&rsquo;t design a safety system that depends on everyone having a good day. Design it so no single bad call can switch it off.</p>
+<p class="back"><a href="index.html">All articles</a></p>
+</article>
+</main>
+<footer class="site-footer">
+  <p>Domonick Thompson &middot; From technician to governance architect</p>
+</footer>
+</body>
+</html>

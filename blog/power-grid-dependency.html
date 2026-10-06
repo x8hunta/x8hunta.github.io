@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Power Grid Dependency: When One System Silently Blinds Another | Domonick Thompson</title>
+<meta name="description" content="A software update slowed one system, which hid a transformer running at 98% capacity. The lesson is mapping what depends on what.">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="../index.html">Domonick Thompson</a>
+  <nav><a href="../index.html">Home</a><a href="../blog/index.html" aria-current="page">Blog</a><a href="../about.html">About</a></nav>
+</header>
+<main>
+<article class="post">
+
+<p class="meta">September 29, 2026 &middot; Challenge 04 <span class="tag">Energy</span><span class="tag">Simulated scenario</span></p>
+<h1>The Power Grid Dependency: When One System Silently Blinds Another</h1>
+<blockquote>
+<p>Assume the digital layer will eventually lie, and make sure something physical can catch it.</p>
+</blockquote>
+<h2>What happened</h2>
+<p><em>This is a simulated scenario I designed for practice.</em></p>
+<p>At a power utility, three assets depend on each other:</p>
+<ul>
+<li><strong>A transformer</strong> carrying the load.</li>
+<li><strong>A control system (SCADA)</strong> that reads the transformer&rsquo;s data.</li>
+<li><strong>A load-balancing ledger</strong> that uses the control system&rsquo;s data to report how loaded the grid is.</li>
+</ul>
+<p>A firmware update on the control system added a delay. Because of the delay, the ledger reported that everything was fine. In reality, the transformer was running at 98% of its capacity.</p>
+<h2>The technician&rsquo;s view</h2>
+<p>The firmware update is buggy. Roll it back or patch the delay.</p>
+<p>That fixes this update. It doesn&rsquo;t stop the next change to the control system from blinding the ledger in the same way.</p>
+<h2>The architect&rsquo;s view</h2>
+<p>This was a <strong>dependency failure</strong>. Each system trusted the one before it, so a fault in the middle quietly corrupted everything downstream. Nobody had mapped which assets depended on which, and nothing checked the reports independently.</p>
+<p>I map assets by their role:</p>
+<ul>
+<li><strong>Source of truth:</strong> the transformer. It&rsquo;s what physically happens.</li>
+<li><strong>Processor:</strong> the control system. It reads and transforms the data.</li>
+<li><strong>Consumer:</strong> the ledger. It relies on the processor&rsquo;s output.</li>
+</ul>
+<p>Any change to a processor should put every consumer on alert.</p>
+<h2>The control: Conservative Override with Independent Sensors</h2>
+<ol>
+<li><strong>Physical sensors:</strong> independent heat sensors on the transformer detect overload no matter what the software reports. They don&rsquo;t run through the control system, so one software bug can&rsquo;t blind both.</li>
+<li><strong>Assume the worst:</strong> when signals disagree, the system acts on the most dangerous one. If the heat is high but the reported load is low, it treats the load as high.</li>
+<li><strong>Automatic safe state:</strong> a disagreement triggers load shedding and switches the system to manual oversight.</li>
+</ol>
+<h2>How to prove it works</h2>
+<p>After every update to a processor, confirm that its consumers were automatically flagged for revalidation. In testing, feed in a high temperature against a low reported load, and confirm the system sheds load and alerts an operator.</p>
+<h2>Takeaway</h2>
+<p>A false alarm is cheap. A missed overload isn&rsquo;t. Design the system to prefer the false alarm.</p>
+<p class="back"><a href="index.html">All articles</a></p>
+</article>
+</main>
+<footer class="site-footer">
+  <p>Domonick Thompson &middot; From technician to governance architect</p>
+</footer>
+</body>
+</html>

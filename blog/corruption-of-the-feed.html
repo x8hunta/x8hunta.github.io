@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Corruption of the Feed: Triangulation Over Trust | Domonick Thompson</title>
+<meta name="description" content="A property manager fakes the occupancy data that drives investor payouts. The fix is a second source of truth the manager can&#x27;t touch.">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="../index.html">Domonick Thompson</a>
+  <nav><a href="../index.html">Home</a><a href="../blog/index.html" aria-current="page">Blog</a><a href="../about.html">About</a></nav>
+</header>
+<main>
+<article class="post">
+
+<p class="meta">September 25, 2026 &middot; Challenge 03 <span class="tag">Finance</span><span class="tag">Simulated scenario</span></p>
+<h1>Corruption of the Feed: Triangulation Over Trust</h1>
+<blockquote>
+<p>Any single data feed, however trusted, is a single point of failure.</p>
+</blockquote>
+<h2>What happened</h2>
+<p><em>This is a simulated scenario I designed for practice. It follows on from the Kingston Plaza tokenization.</em></p>
+<p>The tokenized plaza pays investors based on occupancy data sent to the smart contract by a data feed (called an oracle). The property manager tampers with that feed. It reports 98% occupancy when the real figure is 60%, and the contract pays out dividends based on the lie.</p>
+<h2>The technician&rsquo;s view</h2>
+<p>The oracle is buggy or its connection was hacked. Switch data providers, or require several signatures on the feed.</p>
+<p>A different provider fed by the same property manager will carry the same lie. Extra signatures don&rsquo;t help if the data is false before anyone signs it.</p>
+<h2>The architect&rsquo;s view</h2>
+<p>This is garbage in, garbage out. The contract trusted a single source, and nothing checked the digital claim against physical reality.</p>
+<p>Occupied buildings use electricity and water. Empty ones don&rsquo;t. That gives us a second source of truth the property manager can&rsquo;t easily fake: the utility meters.</p>
+<h2>The control: Multi-Source Verification with a Circuit Breaker</h2>
+<ol>
+<li><strong>Physical truth anchor:</strong> read-only feeds from the electricity and water utilities (JPS and NWC in Jamaica) are compared with the reported occupancy.</li>
+<li><strong>Automatic suspension:</strong> if the two sources disagree by more than a set threshold (15%, for example), the contract freezes dividends, the feed provider loses part of a deposit it posted as a guarantee, and an audit request goes out automatically.</li>
+<li><strong>Human resolution:</strong> the contract only detects the problem. A professional trustee inspects the property in person and signs a sworn statement, and only that can override what the blockchain says.</li>
+</ol>
+<h2>How to prove it works</h2>
+<p>Test it. Feed a false occupancy number into a test environment and confirm the freeze fires, the audit request is sent, and payouts stay stopped until the trustee signs off.</p>
+<h2>Takeaway</h2>
+<p>Don&rsquo;t ask whether a source is trusted. Ask what independent evidence would expose it if it lied.</p>
+<p class="back"><a href="index.html">All articles</a></p>
+</article>
+</main>
+<footer class="site-footer">
+  <p>Domonick Thompson &middot; From technician to governance architect</p>
+</footer>
+</body>
+</html>

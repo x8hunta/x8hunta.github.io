@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Phantom Forest: Why a Baseline Can&#x27;t Be Audited Like a Balance | Domonick Thompson</title>
+<meta name="description" content="A rainforest carbon credit is a certificate for something that did not happen. That makes it far harder to verify than cash in a bank.">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="../index.html">Domonick Thompson</a>
+  <nav><a href="../index.html">Home</a><a href="../blog/index.html" aria-current="page">Blog</a><a href="../about.html">About</a></nav>
+</header>
+<main>
+<article class="post">
+
+<p class="meta">October 5, 2026 &middot; Challenge 09 <span class="tag">Nature/Climate</span><span class="tag">Real-world autopsy</span></p>
+<h1>The Phantom Forest: Why a Baseline Can&#x27;t Be Audited Like a Balance</h1>
+<blockquote>
+<p>A forest credit is a receipt for something that did not happen. You can&rsquo;t confirm it. You can only test it, late.</p>
+</blockquote>
+<h2>What happened</h2>
+<p>This is a real case, and this article sticks to documented facts.</p>
+<p>A rainforest protection credit (called REDD+) is built on a baseline: a forecast of how much forest would have been cleared without the project. Credits issued equal the forecast loss minus the loss that actually happened. The project developer proposes the baseline under an approved methodology. A third-party body validates it. Verra, the registry, then issues the credits, which companies buy to offset their own emissions.</p>
+<p>On 18 January 2023, The Guardian, Die Zeit and SourceMaterial published a nine-month investigation built on three academic studies of Verra projects. It reported that about 94% of the credits from the projects analyzed likely did not represent real reductions, and that baseline forest loss appeared to be overstated by about 400%. It also reported residents at a Peru project describing their homes being cut down by park guards and police.</p>
+<p>Verra responded the same day. It denied that its REDD projects were consistently over-issuing credits. It said the studies calculated emission reductions differently from the number of credits it issued, and that the synthetic-control method they used is poorly suited to REDD projects. Verra&rsquo;s own technical review says the 94% and the 400% come from different studies, with different comparisons.</p>
+<p>In May 2023, Verra announced that its CEO, David Antonioli, would step down. The announcement gave no reason. Press coverage linked it to the criticism.</p>
+<p>In November 2023, Verra published a revised REDD methodology, VM0048.</p>
+<p><strong>Claim boundary:</strong> no fraud is claimed. This is a verification failure alleged in the public record and disputed by Verra. The figures above are as reported. I have not re-derived them.</p>
+<h2>The technician&rsquo;s view</h2>
+<p>The quick diagnosis: the baselines were too high. The fix: improve the models, use better satellite data, retrain the validators.</p>
+<p>That may well help. But it treats the problem as a measurement error, and it leaves in place the conditions that let a high number through.</p>
+<h2>The architect&rsquo;s view</h2>
+<p>This is a failure of <strong>counterfactual verification</strong>, and it differs from the Wirecard case in an important way.</p>
+<p>Wirecard&rsquo;s cash either existed or it didn&rsquo;t. A bank could settle the question with one confirmation. A baseline is a claim about a world nobody observed. It can&rsquo;t be confirmed by anyone. It can only be tested afterward, in aggregate, against comparable land. That is what the academic studies did, and it is why the problem surfaced from outside the system.</p>
+<ul>
+<li><strong>Lifecycle stage (my inference):</strong> the root is Plan, because the baseline is the founding valuation of every credit that follows. If the allegations hold, the validation gate at Acquire did not catch it. It surfaced in Operate, when the credits were already in circulation.</li>
+<li><strong>Pillar:</strong> Metadata first. The asset is the credit. Its quantity is recorded correctly, but the warrant for that quantity (the baseline and methodology) is metadata, and everything downstream depends on it. This ordering comes from the credit formula, not from a documented sequence of events. The Peru reporting, if substantiated, is a separate Legal and Access Layer issue.</li>
+<li><strong>Why this is harder than Wirecard:</strong> paperwork can be genuine and the claim still wrong. A baseline can follow an approved method exactly and still overstate. That makes compliance with the method a weaker signal than compliance with documents.</li>
+<li><strong>Incentives:</strong> Verra&rsquo;s fee schedule from October 2024 charges the project proponent USD 0.23 per claimed tonne at the time of issuance request. Who hires and pays the validation body still needs to be confirmed against Verra&rsquo;s rules. Whether these incentives shaped any outcome here is inference, not a finding.</li>
+</ul>
+<h2>The control: Outcome-Anchored Baseline Issuance</h2>
+<p>A counterfactual can&rsquo;t be confirmed, so the control constrains the number and tests it against what can be observed.</p>
+<ol>
+<li><strong>Issue on the lower of two numbers.</strong> Credits issue on the lower of the developer&rsquo;s baseline and a reference baseline computed from observed deforestation in matched comparison areas. The method and data are public, and the party computing it has no stake in issuance. The validator&rsquo;s judgment does not set the number.</li>
+<li><strong>Release in tranches, with a true-up.</strong> Only part of the credits issue upfront. The rest are withheld until observed outcomes support them. Excess issuance is cancelled from the withheld share first. The withheld share has to be sized to the plausible overstatement, or the surplus is already sold.</li>
+<li><strong>Disclose the gap to several parties.</strong> The difference between the two baselines, and the true-up status, goes to at least three parties through channels the registry can&rsquo;t gate: buyer contracts that define credits as lower-of, buyers&rsquo; own claim assurance, and public release of the inputs so anyone can recompute.</li>
+<li><strong>Override needs a quorum.</strong> Issuing above the lower-of figure needs two named approvers from different reporting lines, neither paid on issuance volume, one independent of the registry. Each override is logged with evidence.</li>
+</ol>
+<p>Verra&rsquo;s revised methodology moves part of the way. VM0048 allocates baselines externally and reassesses them every six years, so the developer no longer sets its own. A cap against a government baseline exists, but the proponent may elect it. I found no ongoing true-up against observed outcomes in that methodology. The older methodologies behind the 2023 projects are not covered here.</p>
+<h2>How to prove it works</h2>
+<p>An auditor would inspect:</p>
+<ul>
+<li>an outside recomputation of the reference baseline from the published inputs</li>
+<li>a re-performed sample of issuances</li>
+<li>tranche reconciliation against observed outcomes</li>
+<li>a register of baseline gaps, with proof each one was disclosed</li>
+<li>the override log</li>
+</ul>
+<p>And one live test: back-test the process on a closed project with a known outcome, and submit a planted overstated baseline. If issuance exceeds the lower-of figure, the control exists only on paper.</p>
+<h2>Takeaway</h2>
+<p>For a claim you can check, the control is confirmation. For a claim you can&rsquo;t, the control is a conservative cap and a late true-up. A technical fix solves the incident. A governance control solves the class of failure.</p>
+<p><strong>What this design doesn&rsquo;t solve yet:</strong> it moves the capture point to whoever computes the reference baseline and whoever writes the buyer contracts. Choosing comparison areas is itself a judgment, so the counterfactual problem returns one level down. Buyers have no obvious reason to accept fewer credits, so nobody yet has the power to impose requirement 3. And who selects and pays the reference-baseline party is not designed.</p>
+<h2>Sources</h2>
+<ul>
+<li>Verra, <a href="https://verra.org/verra-response-guardian-rainforest-carbon-offsets/">Response to the Guardian&rsquo;s rainforest carbon offsets article</a> (January 18, 2023)</li>
+<li>Verra, <a href="https://verra.org/technical-review-of-west-et-al-2020-and-2023-guizar-coutino-2022-and-coverage-in-britains-guardian/">Technical review of West et al. 2020 and 2023, Guizar-Coutiño et al. 2022, and coverage in the Guardian</a></li>
+<li>Carbon Herald, <a href="https://carbonherald.com/the-guardian-investigation-of-verra-carbon-offsets-shows-90-are-worthless/">The Guardian investigation of Verra carbon offsets</a> (secondary summary of the investigation)</li>
+<li>West et al., <a href="https://www.pnas.org/doi/10.1073/pnas.2004334117">study of voluntary REDD+ projects in the Brazilian Amazon</a> (PNAS, 2020)</li>
+<li>Guizar-Coutiño et al., <a href="https://conbio.onlinelibrary.wiley.com/doi/abs/10.1111/cobi.13970">global study of voluntary REDD+ projects</a> (Conservation Biology, 2022)</li>
+<li>Verra, <a href="https://verra.org/verra-ceo-to-step-down/">CEO to step down</a> (May 22, 2023), and Climate Home News, <a href="https://www.climatechangenews.com/2023/05/23/verra-boss-steps-down-after-criticism-of-its-carbon-credits/">Verra boss steps down after criticism of its carbon credits</a> (May 23, 2023)</li>
+<li>Verra, <a href="https://verra.org/methodologies/vm0048-reducing-emissions-from-deforestation-and-forest-degradation-v1-0/">VM0048 Reducing Emissions from Deforestation and Forest Degradation v1.0</a> (November 27, 2023), and <a href="https://verra.org/program-notice/setting-the-standard-verras-revolutionary-new-redd-methodology/">program notice on the new methodology</a></li>
+<li>Verra, <a href="https://verra.org/wp-content/uploads/2024/10/Verra-Program-Fee-Schedule-v1.0.pdf">Program Fee Schedule v1.0</a> (October 16, 2024)</li>
+</ul>
+<p class="back"><a href="index.html">All articles</a></p>
+</article>
+</main>
+<footer class="site-footer">
+  <p>Domonick Thompson &middot; From technician to governance architect</p>
+</footer>
+</body>
+</html>

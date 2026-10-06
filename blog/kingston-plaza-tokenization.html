@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kingston Plaza: A Token Is a Claim, Not the Building | Domonick Thompson</title>
+<meta name="description" content="Tokenizing a commercial plaza is easy to code and hard to govern. The real work is keeping the digital claim tied to the physical asset.">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="../index.html">Domonick Thompson</a>
+  <nav><a href="../index.html">Home</a><a href="../blog/index.html" aria-current="page">Blog</a><a href="../about.html">About</a></nav>
+</header>
+<main>
+<article class="post">
+
+<p class="meta">September 25, 2026 &middot; Challenge 02 <span class="tag">Finance</span><span class="tag">Simulated scenario</span></p>
+<h1>Kingston Plaza: A Token Is a Claim, Not the Building</h1>
+<blockquote>
+<p>A token is not an asset. It&rsquo;s a claim on an asset. The governance job is making sure that claim can&rsquo;t come loose.</p>
+</blockquote>
+<h2>What happened</h2>
+<p><em>This is a simulated scenario I designed for practice.</em></p>
+<p>The owners of a commercial plaza in Kingston, Jamaica, want to split it into 1,000 digital tokens and sell them to institutional investors. The question: how do you link those tokens to a physical building in a way serious investors will trust?</p>
+<h2>The technician&rsquo;s view</h2>
+<p>Write a smart contract, mint 1,000 tokens that represent the building, and build a website where investors can buy them.</p>
+<p>That produces tokens. It doesn&rsquo;t produce anything an investor can rely on. Nothing in the code gives a token holder a legal right to the building.</p>
+<h2>The architect&rsquo;s view</h2>
+<p>The core risk is <strong>decoupling</strong>: the token keeps trading while the legal right to the asset behind it is missing, disputed or out of date. I looked at it through the three pillars of a digital asset:</p>
+<ul>
+<li><strong>Core data:</strong> each token must point to the building&rsquo;s official record. In Jamaica that means the National Land Agency title (its volume and folio), plus the property&rsquo;s mapped boundaries.</li>
+<li><strong>Metadata:</strong> investors are paid from occupancy and net operating income. That data needs to arrive from the property management system on a schedule, so the token doesn&rsquo;t carry stale or invented numbers.</li>
+<li><strong>Legal and access layer:</strong> the token can&rsquo;t literally be a piece of the building. A special purpose company holds the title through a trustee, and the tokens are shares in that company.</li>
+</ul>
+<h2>The control: Institutional-Grade Tokenization Framework</h2>
+<ol>
+<li><strong>Hard anchor:</strong> every token maps to the government land record for the property.</li>
+<li><strong>Live synchronization:</strong> occupancy and income data flow automatically from the property management software into the token platform.</li>
+<li><strong>Legal wrapper:</strong> a special purpose company and a trust deed bind the smart contract&rsquo;s rules to how the physical building is actually managed.</li>
+</ol>
+<p>One thing to check early: shares in a company sold to investors are usually treated as securities, so the securities regulator&rsquo;s rules apply. That&rsquo;s a question for a lawyer, not a developer.</p>
+<h2>How to prove it works</h2>
+<p>An auditor should be able to take any token, trace it to the company&rsquo;s share register, trace the company to the title held by the trustee, and match the income figures on the platform against the property manager&rsquo;s books.</p>
+<h2>Takeaway</h2>
+<p>Coding a token takes an afternoon. Keeping the claim tied to the asset takes governance.</p>
+<p class="back"><a href="index.html">All articles</a></p>
+</article>
+</main>
+<footer class="site-footer">
+  <p>Domonick Thompson &middot; From technician to governance architect</p>
+</footer>
+</body>
+</html>

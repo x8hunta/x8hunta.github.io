@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Ghost Server: Why &quot;Wiped&quot; Needs Proof | Domonick Thompson</title>
+<meta name="description" content="A decommissioned server that was never really gone. Disposal is a process with evidence, not a delete command.">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="../index.html">Domonick Thompson</a>
+  <nav><a href="../index.html">Home</a><a href="../blog/index.html" aria-current="page">Blog</a><a href="../about.html">About</a></nav>
+</header>
+<main>
+<article class="post">
+
+<p class="meta">September 25, 2026 &middot; Challenge 01 <span class="tag">Simulated scenario</span></p>
+<h1>The Ghost Server: Why &quot;Wiped&quot; Needs Proof</h1>
+<blockquote>
+<p>An asset isn&rsquo;t disposed of when someone says it is. It&rsquo;s disposed of when you can prove it.</p>
+</blockquote>
+<h2>What happened</h2>
+<p><em>This is a simulated scenario I designed for practice.</em></p>
+<p>A company retired an on-premise server and left it sitting in the server room. Everyone assumed its drives had been wiped. Months later, a manager who had been let go got back into the room, powered the machine on, and walked away with the customer database.</p>
+<h2>The technician&rsquo;s view</h2>
+<p>The drives weren&rsquo;t wiped properly, and the server room door wasn&rsquo;t secure. So: use a stronger wiping tool and change the locks.</p>
+<p>Both fixes are reasonable. Neither explains why nobody noticed a live server full of customer data that the records said was gone.</p>
+<h2>The architect&rsquo;s view</h2>
+<p>This was a failure at the last stage of the asset lifecycle: disposal. The records said the server was dead. Physically, it was very much alive. That gap is what I call a <strong>ghost asset</strong>: something that exists in reality but not in the register.</p>
+<p>The pillar that failed was <strong>metadata</strong>. The register recorded the server&rsquo;s state based on an assumption, not on evidence. And there was no chain of custody showing where the machine and its drives went after retirement.</p>
+<h2>The control: Mandatory Decommissioning Protocol</h2>
+<p>No asset is marked &ldquo;Disposed&rdquo; in the register until three pieces of evidence are attached:</p>
+<ol>
+<li><strong>A sanitization certificate</strong> showing the media was wiped or destroyed to a recognized standard (NIST SP 800-88 is the usual reference).</li>
+<li><strong>An independent verification signature</strong> from someone other than the person who did the work.</li>
+<li><strong>A physical exit record</strong> confirming the hardware actually left the premises, and where it went.</li>
+</ol>
+<h2>How to prove it works</h2>
+<p>Pick a sample of assets marked &ldquo;Disposed&rdquo; and ask for all three documents for each one. Then walk the server room and compare what&rsquo;s physically there to the register. Any machine in the room that the register says is gone is a finding.</p>
+<h2>Takeaway</h2>
+<p>Disposal is a legal and administrative process, not a delete command. If it isn&rsquo;t documented, it didn&rsquo;t happen.</p>
+<p class="back"><a href="index.html">All articles</a></p>
+</article>
+</main>
+<footer class="site-footer">
+  <p>Domonick Thompson &middot; From technician to governance architect</p>
+</footer>
+</body>
+</html>

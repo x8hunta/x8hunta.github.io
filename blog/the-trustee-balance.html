@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Trustee Balance: What Wirecard Teaches About Evidence Custody | Domonick Thompson</title>
+<meta name="description" content="Two auditors failed against the same weakness. The company being checked controlled the channel the proof came through.">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="../index.html">Domonick Thompson</a>
+  <nav><a href="../index.html">Home</a><a href="../blog/index.html" aria-current="page">Blog</a><a href="../about.html">About</a></nav>
+</header>
+<main>
+<article class="post">
+
+<p class="meta">October 5, 2026 &middot; Challenge 08 <span class="tag">Finance</span><span class="tag">Real-world autopsy</span></p>
+<h1>The Trustee Balance: What Wirecard Teaches About Evidence Custody</h1>
+<blockquote>
+<p>Wirecard was not missing a rule. It was missing enforcement. The company being checked controlled the channel its own proof came through.</p>
+</blockquote>
+<h2>What happened</h2>
+<p>This is a real case, and this article sticks to documented facts.</p>
+<p>In April 2020, KPMG delivered a special investigation into Wirecard. It reported that it could not obtain all the data needed to verify revenue from Wirecard&rsquo;s third-party acquiring business, because that data was primarily in the control of third parties.</p>
+<p>In June 2020, EY refused to sign off Wirecard&rsquo;s 2019 accounts. It could not confirm that EUR 1.9 billion in cash, said to be held in trustee accounts, existed. EY said there were indications that spurious balance confirmations had been provided to deceive the auditor. The confirmations had not come to EY from the banks directly. The two Philippine banks named, BDO and BPI, both said they held no such accounts for Wirecard.</p>
+<p>In the years before, the German regulator BaFin had banned short selling in Wirecard shares for two months (in 2019) and filed a criminal complaint against Financial Times journalists who had questioned the company. The German parliament&rsquo;s committee of inquiry later concluded that BaFin had built a conspiracy theory against those journalists, and called Wirecard a scandal of the authorities.</p>
+<p>Former CEO Markus Braun was charged. The outcome of his trial is not covered here.</p>
+<p><strong>Claim boundary:</strong> existence of the cash was never verified, and the banks denied holding it. This article does not claim how or by whom the documents were produced. That is for the courts.</p>
+<h2>The technician&rsquo;s view</h2>
+<p>The quick diagnosis: EY accepted forged bank confirmations and should have been more skeptical. The fix: train auditors better and have them call the banks directly.</p>
+<p>That&rsquo;s true as far as it goes. But it treats this as one auditor&rsquo;s lapse, and it wasn&rsquo;t. Two independent verifiers failed against the same weakness.</p>
+<h2>The architect&rsquo;s view</h2>
+<p>This was a failure of <strong>evidence custody</strong>. In both audits, the evidence was held by someone other than the verifier. The company, through its trustee, controlled the channel the proof came through.</p>
+<p>Auditing standards already expect the auditor to keep control of the confirmation process (the international standard on external confirmations, ISA 505). In practice, that expectation wasn&rsquo;t enforced. And the regulator protected the company from its critics instead of questioning it.</p>
+<ul>
+<li><strong>Lifecycle stage:</strong> Operate, at the point of checking the asset exists. The root is in Plan: the custody structure gave the verifier no direct line to the source.</li>
+<li><strong>Pillar:</strong> the Legal and Access layer failed first. Forged provenance in the metadata was the symptom.</li>
+<li><strong>Line of sight (my inference):</strong> the trustee cash was presented as coming from the same third-party business whose revenue KPMG couldn&rsquo;t verify. If neither the revenue nor the cash can be checked, nobody can show the asset earned what it was said to earn.</li>
+</ul>
+<h2>The control: Source-Direct Custody Verification</h2>
+<p>It&rsquo;s designed to hold even when the auditor is weak and the regulator is captured.</p>
+<ol>
+<li><strong>Confirm at the source.</strong> Balances above materiality count as verified only when the custodian bank confirms directly to the verifier, using contact details the asset holder did not supply. A reviewer outside the signing audit team re-performs a sample.</li>
+<li><strong>Unverified means impaired.</strong> A balance not confirmed directly within the window is reported as unverified, not carried as an asset. Verbal assurances from management carry no weight.</li>
+<li><strong>Disclose to several parties.</strong> An &ldquo;unverified&rdquo; flag goes to at least three parties with different interests, through channels the company&rsquo;s board can&rsquo;t opt out of: the exchange (as a listing condition), lenders (as a credit agreement condition) and the audit committee. The regulator receives the flag but doesn&rsquo;t control whether it goes out.</li>
+<li><strong>Override needs a quorum.</strong> Overriding a flag needs two named approvers from different reporting lines, neither paid on the balance, one of them on the audit committee. Every override is logged with evidence.</li>
+</ol>
+<h2>How to prove it works</h2>
+<p>An auditor would inspect:</p>
+<ul>
+<li>the confirmation log and the independent re-performance</li>
+<li>the period-end reconciliation</li>
+<li>the register of unverified balances, with proof each flag was disclosed</li>
+<li>the override log</li>
+</ul>
+<p>And one live test: send a planted false confirmation through the intermediary. If the process accepts it, the control only exists on paper.</p>
+<h2>Takeaway</h2>
+<p>When one overseer can be captured, spread the consequences across several parties who carry different risks. A technical fix solves the incident. A governance control solves the class of failure.</p>
+<p><strong>What this design doesn&rsquo;t solve yet:</strong> the recipients of a flag may all be exposed to the same company, the log itself still needs tamper protection, and the exchange channel weakens if the exchange or its supervisor is captured.</p>
+<h2>Sources</h2>
+<ul>
+<li>Deutscher Bundestag, <a href="https://www.bundestag.de/dokumente/textarchiv/2021/kw25-de-3ua-bericht-847030">summary of the final report of the Wirecard committee of inquiry</a> (Drucksache 19/30900, June 22, 2021). <a href="https://fragdenstaat.de/dokumente/145990-deutscher-bundestag-1930900-abschlussbericht-des-dritten-untersuchungsausschusses-wirecard/?page=1">Full report via FragDenStaat</a></li>
+<li>Wirecard AG, <a href="https://wirecard.com/wp-content/uploads/2021/01/AH_2020_04_28_KPMG-report.pdf">ad hoc release on the KPMG special investigation</a>, April 28, 2020</li>
+<li>Crowdfund Insider, <a href="https://www.crowdfundinsider.com/2020/06/162919-auditor-indicates-wirecard-loses-e1-9-billion-indications-of-presentation-of-spurious-balance-confirmations/">EY&rsquo;s statement on spurious balance confirmations</a>, June 2020</li>
+<li>GMA News, <a href="https://www.gmanetwork.com/news/money/economy/743391/bdo-bpi-deny-they-hold-wirecard-s-missing-p2-1-b-cash/story/">BDO and BPI deny holding Wirecard&rsquo;s cash</a>, June 2020</li>
+<li>European Parliament, <a href="https://www.europarl.europa.eu/RegData/etudes/STUD/2020/651383/IPOL_STU(2020)651383_EN.pdf">What are the wider supervisory implications of the Wirecard case?</a> (2020)</li>
+</ul>
+<p class="back"><a href="index.html">All articles</a></p>
+</article>
+</main>
+<footer class="site-footer">
+  <p>Domonick Thompson &middot; From technician to governance architect</p>
+</footer>
+</body>
+</html>
