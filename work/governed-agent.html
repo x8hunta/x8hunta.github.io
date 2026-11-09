@@ -30,7 +30,7 @@
 <h2>The story</h2>
 <p>Automation is fast, and fast mistakes spread. So this tool is only allowed to do three things on its own: notice, suggest and wait.</p>
 <p>It keeps an official record of how every computer on the network should be set up, and compares it with how each one is actually running. When a computer drifts, say it has lost its network address, the tool flags it and proposes the fix from the record. Then it stops.</p>
-<p>Try to apply the fix before anyone approves it, and the tool refuses. Once a person approves, it applies the fix, checks the network against the record again, and the problem turns from red to green on a 3D map. Every step, including every refusal, goes into a history log that can&rsquo;t be edited or deleted.</p>
+<p>Try to apply the fix before anyone approves it, and the tool refuses. Once a person approves, it applies the fix, checks the network against the record again, and the problem turns from red to green on a 3D map. Every step, including every refusal, goes into a history log the app can&rsquo;t edit or delete.</p>
 <h2>What it proves</h2>
 <p>The approval gate works:</p>
 <ul>
@@ -45,6 +45,7 @@
 <li>The &ldquo;fixer&rdquo; follows fixed rules. There is no AI in it yet.</li>
 <li>The approver is a fixed name, not a real login.</li>
 <li>When a fix is waiting, nobody is notified. Someone has to look.</li>
+<li>Someone with access to the computer could still delete the whole log file. There&rsquo;s no copy kept anywhere else yet.</li>
 </ul>
 <h2>For network people</h2>
 <p>The register holds intended L3 config for two /29 subnets and is the source of truth. A detector reconciles live state against it and logs findings; the agent turns findings into proposals; an apply gate refuses anything not approved. The audit table is append-only, enforced by database triggers. FastAPI, SQLite, vanilla JS, 3d-force-graph. Test case: a host with no IP, mask or gateway, taken from a routed troubleshooting lab.</p>

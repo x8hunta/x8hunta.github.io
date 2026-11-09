@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Trunk That Wasn&#x27;t: three records, one network, no reconciliation | Domonick Thompson</title>
+<meta name="description" content="One computer couldn&#x27;t reach the others. The fix took two commands. The real finding was that three records described the network and nothing checked them against each other.">
+<meta property="og:site_name" content="Domonick Thompson">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Trunk That Wasn&#x27;t: three records, one network, no reconciliation">
+<meta property="og:description" content="One computer couldn&#x27;t reach the others. The fix took two commands. The real finding was that three records described the network and nothing checked them against each other.">
+<meta property="og:url" content="https://x8hunta.github.io/blog/the-trunk-that-wasnt.html">
+<meta property="og:image" content="https://x8hunta.github.io/og/the-trunk-that-wasnt.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="../index.html">Domonick Thompson</a>
+  <nav><a href="../index.html">Home</a><a href="../blog/index.html" aria-current="page">Blog</a><a href="../about.html">About</a><a href="../proof.html">Proof</a></nav>
+</header>
+<main>
+<article class="post">
+
+<p class="meta">November 5, 2026 <span class="tag">Networking</span><span class="tag">Training lab</span></p>
+<h1>The Trunk That Wasn&#x27;t: three records, one network, no reconciliation</h1>
+<blockquote>
+<p>A form that looks filled in is not proof that anything was saved. The device&rsquo;s output is.</p>
+</blockquote>
+<h2>What happened</h2>
+<p><em>This is a training lab, on a simulated network. It is not client work.</em> The lab is <a href="https://wittynetworks.net/courses/packet-tracer-troubleshooting-fundamentals/lessons/packet-tracer-troubleshooting-phase-1-2/topics/troubleshooting-fundamentals-lab-phase-1-3-2/">Troubleshooting Fundamentals, Phase 1.3</a> from Witty Networks. The diagrams below are my own.</p>
+<p>Five devices, one network: two switches (SW1 and SW2) and three computers (Host A, B and C). The ticket: <strong>Host C can&rsquo;t reach Hosts A and B.</strong></p>
+<p><img alt="Before: the link between the two switches is broken and Host B has no address" src="../diagrams/nal-001-before.svg" />
+<em>Before. The link between the switches was set up differently at each end, and Host B had no address.</em></p>
+<p>Before I touched anything, the lab&rsquo;s own diagram was already wrong. It listed Host C as 182.168.1.4. The device itself said 192.168.1.4. The record was wrong before work started.</p>
+<h2>The technician&rsquo;s view</h2>
+<p>There were two faults.</p>
+<p><strong>1. The link between the switches.</strong> On SW1 the connecting port was a trunk, a link that carries several networks at once and labels each message with its network. On SW2 the same link was a plain access port that expects no labels. The two ends disagreed, so traffic from Host C couldn&rsquo;t cross. SW1&rsquo;s port description even said <code>Trunk_to_SW2</code>, which recorded what the link was meant to be. The fix, written out and reviewed before typing, at <code>SW2(config-if)#</code>: <code>switchport mode trunk</code>. After it, Host A could reach Host C.</p>
+<p><strong>2. Host B.</strong> With the link fixed, I ruled things out one at a time: the link (A to C now worked across it), the network settings on both switches, Host C, and Host B&rsquo;s switch port. The only suspect left was Host B. It had no address at all.</p>
+<p><strong>The near miss.</strong> My first fix on Host B didn&rsquo;t take. The settings panel showed grey placeholder text (192.0.2.x) that looked like saved values. Only <code>ipconfig</code>, the computer&rsquo;s own report, showed that nothing had changed. The second time I gave Host B 192.168.1.3 with mask 255.255.255.0, checked it on the device, and Host C reached Host B.</p>
+<p>I left the gateway blank on purpose. There&rsquo;s no router in this network and all the computers share one subnet. A gateway of .1 would have passed the ping test while pointing at a device that doesn&rsquo;t exist.</p>
+<p><img alt="After: both ends of the link are trunks and Host B has its address" src="../diagrams/nal-001-after.svg" />
+<em>After. Both ends of the link agree, and Host B is on the network.</em></p>
+<h2>Where this happens for real</h2>
+<p><em>An illustration of the same faults in a real setting. It is not a real incident.</em></p>
+<p>Picture a small clinic with the same five devices. SW1 sits at the front desk, with the reception computer (Host A) and the nurse station (Host B). SW2 sits in the records room, with the server that holds patient records (Host C).</p>
+<ul>
+<li><strong>The link fault.</strong> The records-room switch is replaced in a hurry, and its end of the link isn&rsquo;t set up the way the front-desk end expects. Every light is green and the cable is fine, but the front desk can&rsquo;t open a single patient record.</li>
+<li><strong>The missing address.</strong> A new nurse-station computer goes in. The settings screen looks filled in, so everyone assumes it&rsquo;s on the network. It isn&rsquo;t.</li>
+</ul>
+<p>Nothing is &ldquo;down&rdquo; in a way an alarm would catch. Patients wait while staff fall back to paper. Then the workarounds start: records copied to USB sticks, a phone used as a hotspot. That&rsquo;s how a configuration gap becomes a privacy and security problem.</p>
+<h2>The architect&rsquo;s view</h2>
+<p><em>From here on I&rsquo;m asking: what if this were a real network?</em></p>
+<p>Three records described this network: the diagram, the port descriptions, and the device settings themselves. Nothing compared them. Each fault was a gap between a record and reality. There was no step that checked a device against its design after a change, and no check that a device was set up before it went into service.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Finding</th>
+<th>Pillar</th>
+<th>Lifecycle</th>
+<th>Lesson</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>The diagram and the device disagreed on Host C&rsquo;s address</td>
+<td>Metadata</td>
+<td>Operate</td>
+<td>Reality wins; the record is the finding</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Placeholder text read as saved settings</td>
+<td>Metadata</td>
+<td>Maintain</td>
+<td>Evidence over assertion</td>
+</tr>
+<tr>
+<td>3</td>
+<td>A gateway pointing at a device that doesn&rsquo;t exist (proposed, caught at review)</td>
+<td>Metadata</td>
+<td>Maintain</td>
+<td>A ghost record</td>
+</tr>
+<tr>
+<td>4</td>
+<td>SW2 had drifted from the design recorded in SW1&rsquo;s description; the two ends use different description formats</td>
+<td>Metadata</td>
+<td>Operate</td>
+<td>Configuration drift</td>
+</tr>
+<tr>
+<td>5</td>
+<td>The lab&rsquo;s checker passed the outcome without checking the settings</td>
+<td>Assurance</td>
+<td>Maintain</td>
+<td>Performative compliance</td>
+</tr>
+</tbody>
+</table>
+<h2>The control</h2>
+<p><strong>NCV-1: Network Change Verification.</strong> What it requires:</p>
+<ol>
+<li>Every change is written out, with the prompt it will be typed at, and reviewed before it&rsquo;s typed.</li>
+<li>Before and after evidence comes from the device itself, with the device name visible. Forms and diagrams don&rsquo;t count.</li>
+<li>After a change, both ends of a link are checked against the design record (<code>show run int</code>).</li>
+<li>Every value in a configuration must name something that exists: an address, a network, a gateway.</li>
+<li>Any gap between a record and a device is logged as a finding. The record is corrected, unless the device breaks the design.</li>
+</ol>
+<h2>How to prove it works</h2>
+<p>In this lab: the port status on both switches, the settings of the link port on both ends, <code>ipconfig</code> on Host B before and after, a ping on each path, then the lab&rsquo;s checker.</p>
+<p>On a real network: a scheduled export of every device&rsquo;s settings, compared against the register and the diagram. Any mismatch is a finding. Planned, not built yet: a tool that reads a network diagram into a register, which gives that comparison its starting point.</p>
+<h2>Takeaway</h2>
+<table>
+<thead>
+<tr>
+<th>On the network</th>
+<th>In asset governance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Network diagram</td>
+<td>The asset register</td>
+</tr>
+<tr>
+<td>Port description</td>
+<td>Metadata that records design intent</td>
+</tr>
+<tr>
+<td><code>show run</code> / <code>ipconfig</code></td>
+<td>Inspecting the asset itself, the physical truth</td>
+</tr>
+<tr>
+<td>An unsaved form field</td>
+<td>A record entry with no evidence behind it</td>
+</tr>
+<tr>
+<td>The lab checker</td>
+<td>An outcome test, not a configuration audit</td>
+</tr>
+</tbody>
+</table>
+<p>A technical fix solved the ticket. A control that compares records with devices solves the class of failure.</p>
+<h2>Audit trail</h2>
+<ul>
+<li>Checked by me and by the lab&rsquo;s automated checker. No independent reviewer, so self-verification is a stated limit.</li>
+<li>The &ldquo;before&rdquo; state of SW2&rsquo;s port comes from my lab notes. I have no screenshot of it.</li>
+<li>Open: the two switches still describe the link in different formats. Noted, not changed.</li>
+</ul>
+<p class="back"><a href="index.html">All articles</a></p>
+</article>
+</main>
+<footer class="site-footer">
+  <p>Domonick Thompson &middot; Digital asset management for networks</p>
+</footer>
+</body>
+</html>
