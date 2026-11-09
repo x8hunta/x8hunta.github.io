@@ -27,9 +27,9 @@
 <h2>A network fixer that has to ask permission first</h2>
 <p><strong>Simulated.</strong> An automated tool spots a misconfigured computer, proposes the fix and waits. Nothing changes until a person approves it, and every step is logged.</p>
 <ul>
-<li><strong>What it proves:</strong> an unapproved fix is refused; an approved fix clears the problem; a decided fix can&rsquo;t be approved again; the history log refuses edits and deletes.</li>
-<li><strong>What it doesn&rsquo;t prove yet:</strong> simulated network only; no AI inside, it follows fixed rules; the approver is a fixed name, not a real login.</li>
-<li><strong>Bundle:</strong> <a href="proof/governed-agent.zip">governed-agent.zip</a>: code, self-test output, HTTP gate test.</li>
+<li><strong>What it proves:</strong> an unapproved fix is refused; an approved fix clears the problem; a decided fix can&rsquo;t be approved again; the app can&rsquo;t edit or delete the history log; the 3D map turns the faulty computer from red to green after an approved fix.</li>
+<li><strong>What it doesn&rsquo;t prove yet:</strong> simulated network only; no AI inside, it follows fixed rules; the approver is a fixed name, not a real login; someone with access to the computer could still delete the whole log file.</li>
+<li><strong>Bundle:</strong> <a href="proof/governed-agent.zip">governed-agent.zip</a>: code, self-test output, an HTTP gate test you can re-run yourself, and before-and-after captures of the 3D map.</li>
 </ul>
 <h2>Working with AI taught me to verify twice</h2>
 <p><strong>Training lab.</strong> One AI built my slide decks, a second AI checked them, and I checked the checker. Two runs, same pattern: facts right, &ldquo;missing&rdquo; items mostly wrong, and real unapproved wording caught both times.</p>
@@ -59,8 +59,9 @@ ssh-keygen -Y verify -f allowed_signers -I _x8hunta -n file -s SHA256SUMS.sig &l
 <h2>The fine print</h2>
 <ul>
 <li>Release REL-001, 8 November 2026. Bundles are built from fixed commits in private repositories, without their history.</li>
-<li>Before release, every bundle was scanned for secrets, personal paths and private names (0 hits) and scanned by Windows Defender (no threats).</li>
-<li>I approved this release myself. There was no independent reviewer.</li>
+<li>Release REL-002, 9 November 2026, replaced governed-agent.zip only. It adds a re-runnable HTTP gate test and the 3D map captures, and corrects the log claim (&ldquo;can&rsquo;t be edited or deleted&rdquo; became &ldquo;the app can&rsquo;t edit or delete&rdquo;). The replaced REL-001 file had sha256 <code>597d92db33d8f7b21515520b3e30f0a546988c2b24ae5360809d931b43af462d</code>. The other two bundles are unchanged.</li>
+<li>Before each release, every new bundle was scanned for secrets, personal paths and private names and scanned by Windows Defender. Results are in each release record.</li>
+<li>I approved these releases myself. There was no independent reviewer.</li>
 <li>If a claim turns out to be wrong, I&rsquo;ll publish a correction and keep the old checksum listed. Files are never swapped silently.</li>
 <li>© 2026 Domonick Thompson. All rights reserved. The files are published so the work can be checked, not reused.</li>
 </ul></article>
