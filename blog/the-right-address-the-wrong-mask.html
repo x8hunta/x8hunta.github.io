@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Right Address, the Wrong Mask: when every check says fine | Domonick Thompson</title>
+<meta name="description" content="Two computers couldn&#x27;t reach their router. Every summary view said the router was healthy, and the address was correct. The fault was the one number the summaries never show.">
+<meta property="og:site_name" content="Domonick Thompson">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Right Address, the Wrong Mask: when every check says fine">
+<meta property="og:description" content="Two computers couldn&#x27;t reach their router. Every summary view said the router was healthy, and the address was correct. The fault was the one number the summaries never show.">
+<meta property="og:url" content="https://x8hunta.github.io/blog/the-right-address-the-wrong-mask.html">
+<meta property="og:image" content="https://x8hunta.github.io/og/the-right-address-the-wrong-mask.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="../index.html">Domonick Thompson</a>
+  <nav><a href="../index.html">Home</a><a href="../blog/index.html" aria-current="page">Blog</a><a href="../about.html">About</a><a href="../proof.html">Proof</a></nav>
+</header>
+<main>
+<article class="post">
+
+<p class="meta">November 9, 2026 <span class="tag">Networking</span><span class="tag">Training lab</span></p>
+<h1>The Right Address, the Wrong Mask: when every check says fine</h1>
+<blockquote>
+<p>A check that only looks at the address will pass a broken network. The record has to hold what the summary leaves out.</p>
+</blockquote>
+<h2>What happened</h2>
+<p><em>This is a training lab, on a simulated network. It is not client work.</em> The lab is <a href="https://wittynetworks.net/courses/packet-tracer-troubleshooting-fundamentals/lessons/packet-tracer-troubleshooting-phase-1-2/topics/troubleshooting-fundamentals-lab-phase-1-6-2/">Troubleshooting Fundamentals, Phase 1.6</a> from Witty Networks. The diagrams below are my own.</p>
+<p>Two small networks (subnets), joined by router R1. The top one has Hosts C, D and E on switch SW2. The bottom one has Hosts A and B on switch SW1. The ticket: <strong>Host E can&rsquo;t reach Hosts A and B.</strong></p>
+<p>The lab&rsquo;s diagram showed every address. It didn&rsquo;t show a single mask: the number that decides which addresses count as &ldquo;on the same network&rdquo;. That&rsquo;s where the fault was.</p>
+<p><img alt="Before: Host D and Host E can't reach the router; R1's top interface has the wrong mask" src="../diagrams/nal-004-before.svg" />
+<em>Before. R1&rsquo;s top interface had a /30 mask while the computers used /29. Host D and Host E were cut off.</em></p>
+<h2>The technician&rsquo;s view</h2>
+<p><strong>Start at the complaint.</strong> Host E&rsquo;s settings were complete: 192.168.2.4, a /29 mask, gateway 192.168.2.1. They were also consistent: .4 and .1 sit in the same /29 range. But Host E couldn&rsquo;t reach its own gateway: 0 of 4 replies.</p>
+<p><strong>The split test.</strong> Was it Host E&rsquo;s side, or the gateway&rsquo;s side? I tested from Host D, on the same subnet with the same gateway, and predicted first: if Host D gets through, the fault is Host E&rsquo;s switch port. Host D failed too. Then I checked Host D&rsquo;s own settings, because a comparison only counts once the comparison host is proven good. They were fine. Two good computers failing pointed at the shared path to the gateway.</p>
+<p><strong>Everything looked fine.</strong> The switch showed every port on the path connected and on the same network (VLAN 20). The router&rsquo;s summary view, <code>sh ip int brief</code>, showed its top interface with the right address, 192.168.2.1, and &ldquo;up/up&rdquo;. Every check passed, and the pings still failed. That summary view shows the address. It never shows the mask.</p>
+<p><strong>The mask.</strong> The detail view, <code>sh ip int g0/1</code>, showed <strong>192.168.2.1/30</strong>. A /30 covers only .0 to .3. To the router, Host D&rsquo;s .3 was the broadcast address of its own network, and Host E&rsquo;s .4 was on no network it knew. The address was right. The mask made it wrong.</p>
+<p><strong>The fix, proven.</strong> Reviewed before typing: set the interface to 192.168.2.1 with mask 255.255.255.248 (/29). The router confirmed the new mask and logged the change. Host E then reached Hosts A and B, 4 of 4 each, and both reached Host E back. I saved the router&rsquo;s configuration so it survives a restart, and the lab&rsquo;s checker passed.</p>
+<p><img alt="After: R1's top interface back to /29; Host E reaches both hosts and back" src="../diagrams/nal-004-after.svg" />
+<em>After. R1 back to /29. Hosts D and C were not re-tested.</em></p>
+<p><strong>What I didn&rsquo;t check.</strong> The ticket named only Host E, but Host D was cut off too. By the math, Host C (.2) sat inside the /30 and probably kept working. I didn&rsquo;t re-test Host D or Host C after the fix. That&rsquo;s a gap, and it&rsquo;s in the findings below.</p>
+<h2>Where this happens for real</h2>
+<p><em>An illustration of the same fault in a real setting. It is not a real incident.</em></p>
+<p>Picture a bank branch. Teller workstations sit on one subnet, and a router connects them to head office, where the account systems live. During routine maintenance, someone retypes the router&rsquo;s settings and gets one number wrong: the mask.</p>
+<p>Most teller stations go dark. One keeps working, because its address happens to fall inside the smaller range. The first complaint comes from one teller, so the ticket says one workstation is broken. Every dashboard shows the router up and the address correct. Customers queue while the team hunts in the wrong place, and the one working station makes it look like a local fault.</p>
+<h2>The architect&rsquo;s view</h2>
+<p><em>From here on I&rsquo;m asking: what if this were a real network?</em></p>
+<p>The router interface had the right address with the wrong prefix length, and every summary view reported it healthy. Nothing recorded each interface&rsquo;s intended mask, and nothing checked the live settings against it. A check that compared addresses alone would have passed this fault.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Finding</th>
+<th>Pillar</th>
+<th>Lifecycle</th>
+<th>Lesson</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>The router interface had a /30 mask against a /29 design; Host D and Host E were cut off</td>
+<td>Metadata</td>
+<td>Operate</td>
+<td>Reality wins; the record is the finding</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Summary views showed healthy; the mask was only in the detail view</td>
+<td>Assurance</td>
+<td>Operate</td>
+<td>Configured is not controlled</td>
+</tr>
+<tr>
+<td>3</td>
+<td>The ticket named one computer; the fault reached further, and two computers weren&rsquo;t re-tested</td>
+<td>Assurance</td>
+<td>Maintain</td>
+<td>Verify the class, not the ticket</td>
+</tr>
+<tr>
+<td>4</td>
+<td>The split test relied on a comparison computer; it only counts once that computer is proven good</td>
+<td>Assurance</td>
+<td>Maintain</td>
+<td>Triangulation over trust</td>
+</tr>
+<tr>
+<td>5</td>
+<td>The same &ldquo;who is my gateway&rdquo; setting is what an attacker abuses with ARP cache poisoning (MITRE ATT&amp;CK T1557.002)</td>
+<td>Legal &amp; Access</td>
+<td>Operate</td>
+<td>Detection pairs with prevention</td>
+</tr>
+</tbody>
+</table>
+<h2>The control</h2>
+<p><strong>AAR-1: Address Authority and Reconciliation, extended to router interfaces.</strong> What it requires:</p>
+<ol>
+<li>The address register holds every interface&rsquo;s intended address <strong>and prefix length</strong>, router interfaces included.</li>
+<li>An interface is not in service until its live address and prefix match its register entry.</li>
+<li>A scheduled scan compares live interface settings with the register. Any difference is a logged finding.</li>
+<li>The scan is proven able to fail: a planted mismatch, such as a /30 on a test interface, must be flagged before the scan&rsquo;s &ldquo;all clean&rdquo; result is trusted.</li>
+<li>Every gateway entry names the real router interface. Switch protection (Dynamic ARP Inspection) blocks a fake gateway, and the same scan detects one.</li>
+</ol>
+<h2>How to prove it works</h2>
+<p>In this lab: settings on Hosts E and D; gateway pings from both; port status on the switch; the router&rsquo;s summary and detail views; the change; the detail view again; pings in both directions; saving the configuration; then the lab&rsquo;s checker.</p>
+<p>On a real network: a scheduled scan against the register, with a planted-mismatch test each cycle and every finding closed under change control. Requirement 4 is the one most often missing. A scan that has only ever reported &ldquo;clean&rdquo; proves nothing. I applied the same idea to my own <a href="../work/governed-agent.html">network fixer</a>: its gate test is checked by deliberately breaking the gate and confirming the test fails.</p>
+<h2>Takeaway</h2>
+<table>
+<thead>
+<tr>
+<th>On the network</th>
+<th>In asset governance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The address</td>
+<td>The asset&rsquo;s name in the register</td>
+</tr>
+<tr>
+<td>The mask (prefix length)</td>
+<td>The asset&rsquo;s scope: what it considers its own</td>
+</tr>
+<tr>
+<td><code>sh ip int brief</code> and &ldquo;up/up&rdquo;</td>
+<td>A dashboard that reports green</td>
+</tr>
+<tr>
+<td>The detail view</td>
+<td>Inspecting the asset itself</td>
+</tr>
+<tr>
+<td>A planted mismatch in the scan</td>
+<td>Testing that the control can catch what it claims to catch</td>
+</tr>
+</tbody>
+</table>
+<p>A technical fix restored one interface. A register that records scope, and a scan proven able to fail, solves the class of failure.</p>
+<h2>Audit trail</h2>
+<ul>
+<li>Checked by me and by the lab&rsquo;s automated checker. No independent reviewer, so self-verification is a stated limit.</li>
+<li>This was a coached run. Two coach prompts shaped it: to verify Host D before trusting it, and to save the router&rsquo;s configuration.</li>
+<li>An earlier version of this write-up said the fault cut off the whole top subnet. That was wrong for Host C, and it was corrected before publishing.</li>
+<li>Open: Hosts D and C not re-tested after the fix. AAR-1 is proposed, not built.</li>
+</ul>
+<p class="back"><a href="index.html">All articles</a></p>
+</article>
+</main>
+<footer class="site-footer">
+  <p>Domonick Thompson &middot; Digital asset management for networks</p>
+</footer>
+</body>
+</html>
