@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Host Off the Books: when the right address exists nowhere as a record | Domonick Thompson</title>
+<meta name="description" content="One computer had no network identity at all. The fix was its address, read off a neighbour. The finding was that no record anywhere said what that address should be.">
+<meta property="og:site_name" content="Domonick Thompson">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Host Off the Books: when the right address exists nowhere as a record">
+<meta property="og:description" content="One computer had no network identity at all. The fix was its address, read off a neighbour. The finding was that no record anywhere said what that address should be.">
+<meta property="og:url" content="https://x8hunta.github.io/blog/the-host-off-the-books.html">
+<meta property="og:image" content="https://x8hunta.github.io/og/the-host-off-the-books.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="../index.html">Domonick Thompson</a>
+  <nav><a href="../index.html">Home</a><a href="../blog/index.html" aria-current="page">Blog</a><a href="../about.html">About</a><a href="../proof.html">Proof</a></nav>
+</header>
+<main>
+<article class="post">
+
+<p class="meta">November 6, 2026 <span class="tag">Networking</span><span class="tag">Training lab</span></p>
+<h1>The Host Off the Books: when the right address exists nowhere as a record</h1>
+<blockquote>
+<p>If the only way to learn a device&rsquo;s correct settings is to copy its neighbour, the device was never on the books.</p>
+</blockquote>
+<h2>What happened</h2>
+<p><em>This is a training lab, on a simulated network. It is not client work.</em> The lab is <a href="https://wittynetworks.net/courses/packet-tracer-troubleshooting-fundamentals/lessons/packet-tracer-troubleshooting-phase-1-2/topics/troubleshooting-fundamentals-lab-phase-1-5-2/">Troubleshooting Fundamentals, Phase 1.5</a> from Witty Networks. The diagrams below are my own.</p>
+<p>Two small networks (subnets), joined by a router. The top one has Host C and Host D on switch SW2. The bottom one has Host A and Host B on switch SW1. Router R1 sits between them. The ticket: <strong>Host D can&rsquo;t reach Host B.</strong></p>
+<p>This was the first routed lab in the series. Crossing from one subnet to another needs a default gateway: the address of the router that carries traffic out. In the earlier labs, where everything sat on one subnet, a blank gateway was correct. Here, a blank gateway is silent: nothing errors, the traffic just never leaves.</p>
+<p><img alt="Before: Host B has no address, so Host D can't reach it" src="../diagrams/nal-003-before.svg" />
+<em>Before. Host B had no address, no mask and no gateway.</em></p>
+<h2>The technician&rsquo;s view</h2>
+<p><strong>Reading the two hosts.</strong> Host D&rsquo;s settings were complete: 192.168.2.3, a /29 mask, gateway 192.168.2.1. Host B had nothing: no address, no mask, no gateway. A computer with no identity can&rsquo;t reach anyone, and nothing tested from it can be trusted.</p>
+<p><strong>The split test.</strong> Was it only Host B, or was the router path broken too? I tested from Host A, a known-good computer on the same subnet as B. Host A reached Host D: 4 of 4 replies, with a TTL of 127. TTL 127 means exactly one router hop, so the path through R1 worked. And Host A&rsquo;s gateway (192.168.1.1) is the gateway Host B would need, so that side of R1 was already proven. The fault was Host B alone.</p>
+<p><strong>The fix.</strong> I gave Host B 192.168.1.3, mask 255.255.255.248 (/29), gateway 192.168.1.1, reviewed before typing. I didn&rsquo;t guess those values. I read them off Host A, its neighbour on the same subnet. I checked the settings with <code>ipconfig</code> before testing. Then I reproduced the ticket: Host D reached Host B 4 of 4, and, without being asked to, I tested the reverse direction too: 4 of 4. The lab&rsquo;s checker passed.</p>
+<p><img alt="After: Host B is addressed and reachable through R1" src="../diagrams/nal-003-after.svg" />
+<em>After. Host B has its address and gateway, and traffic crosses R1 both ways.</em></p>
+<h2>Where this happens for real</h2>
+<p><em>An illustration of the same fault in a real setting. It is not a real incident.</em></p>
+<p>Picture a small electricity substation. The top subnet is the control room. The bottom subnet is out in the substation, and a router joins the two.</p>
+<p>A new monitoring device is installed in the substation. It powers on and its lights look normal, but it was never given its network address, because nobody wrote down what that address should be. The control room can&rsquo;t reach it.</p>
+<p>Nothing raises an alarm. A device that never joined the network can&rsquo;t report that it&rsquo;s missing. Readings from that part of the substation simply never arrive, and operators make decisions without them. When someone finally fixes it, the quickest way to find the right address is the one I used: copy a neighbour. That works, but it means the correct value was never on record.</p>
+<p>The same gateway setting is also a security point. Whoever controls where a device sends its traffic can sit in the middle and read it.</p>
+<h2>The architect&rsquo;s view</h2>
+<p><em>From here on I&rsquo;m asking: what if this were a real network?</em></p>
+<p>The correct address for Host B existed nowhere as a record. I rebuilt it by reading a neighbour. The device was off the books. There was no authoritative list of addresses, and no step that checked a device&rsquo;s live settings against an intended record, either before it went into service or on a schedule afterwards.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Finding</th>
+<th>Pillar</th>
+<th>Lifecycle</th>
+<th>Lesson</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>A device in service with no network identity, and nothing caught it</td>
+<td>Metadata</td>
+<td>Operate</td>
+<td>Reality wins; the record is the finding</td>
+</tr>
+<tr>
+<td>2</td>
+<td>No address register; the correct value was knowable only from a neighbour</td>
+<td>Metadata</td>
+<td>Plan</td>
+<td>If it isn&rsquo;t documented, it didn&rsquo;t happen</td>
+</tr>
+<tr>
+<td>3</td>
+<td>A blank gateway silently blocks traffic between subnets</td>
+<td>Metadata</td>
+<td>Operate</td>
+<td>The device can&rsquo;t reach the rest of the network</td>
+</tr>
+<tr>
+<td>4</td>
+<td>The fault was isolated by testing from a known-good neighbour, not from one device alone</td>
+<td>Assurance</td>
+<td>Maintain</td>
+<td>Triangulation over trust</td>
+</tr>
+<tr>
+<td>5</td>
+<td>The same gateway setting is a place an attacker could intercept traffic (MITRE ATT&amp;CK T1557)</td>
+<td>Legal &amp; Access</td>
+<td>Operate</td>
+<td>Detection pairs with prevention</td>
+</tr>
+</tbody>
+</table>
+<h2>The control</h2>
+<p><strong>AAR-1: Address Authority and Reconciliation.</strong> What it requires:</p>
+<ol>
+<li>Every device&rsquo;s intended address, mask and gateway lives in an address register (IPAM). The register is the source of truth, not the diagram and not the device.</li>
+<li>A device is not in service until its live settings match its register entry.</li>
+<li>A scheduled scan compares live device settings with the register. Any difference is a logged finding.</li>
+<li>When they differ, reality is the finding: the register or the device is corrected under change control. The disagreement is never left standing.</li>
+<li>Every gateway entry must name the real router interface. A fake gateway, inserted by spoofing the network&rsquo;s address service or poisoning its address tables, is prevented with switch features built for that (DHCP snooping and Dynamic ARP Inspection) and caught by the same scan.</li>
+</ol>
+<h2>How to prove it works</h2>
+<p>In this lab: <code>ipconfig</code> on Hosts D, B and A; a split-test ping from known-good Host A; <code>ipconfig</code> on Host B after the change; pings in both directions; then the lab&rsquo;s checker.</p>
+<p>On a real network: a scheduled scan of live settings, reconciled against the address register. Any mismatch is a finding. Planned, not built yet: a tool that reads a network diagram into a register, which gives that scan its starting point. My <a href="../work/governed-agent.html">network fixer</a> already does this reconciliation on a simulated network, using this exact case.</p>
+<h2>Takeaway</h2>
+<table>
+<thead>
+<tr>
+<th>On the network</th>
+<th>In asset governance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Address register (IPAM)</td>
+<td>The asset register, the source of truth</td>
+</tr>
+<tr>
+<td>Default gateway</td>
+<td>The asset&rsquo;s declared route to the rest of the estate</td>
+</tr>
+<tr>
+<td><code>ipconfig</code> / a live scan</td>
+<td>Inspecting the asset itself, the physical truth</td>
+</tr>
+<tr>
+<td>Reading a neighbour to learn B&rsquo;s address</td>
+<td>Rebuilding a record from a neighbour because none exists</td>
+</tr>
+<tr>
+<td>The lab&rsquo;s &ldquo;network state verified&rdquo; checker</td>
+<td>An outcome test, not a register audit</td>
+</tr>
+</tbody>
+</table>
+<p>A technical fix put one device back online. A register that every device is checked against solves the class of failure.</p>
+<h2>Audit trail</h2>
+<ul>
+<li>Checked by me and by the lab&rsquo;s automated checker. No independent reviewer, so self-verification is a stated limit.</li>
+<li>Open: no address register exists yet. AAR-1 is proposed, not built.</li>
+</ul>
+<p class="back"><a href="index.html">All articles</a></p>
+</article>
+</main>
+<footer class="site-footer">
+  <p>Domonick Thompson &middot; Digital asset management for networks</p>
+</footer>
+</body>
+</html>
