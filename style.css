@@ -164,3 +164,4 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 2.5rem 0; }
 @media (prefers-reduced-motion: reduce) { .card { transition: none; } .card:hover { transform: none; } }
 .post img { display: block; max-width: 100%; height: auto; margin: 1.4rem 0 .4rem; border-radius: 14px; border: 1px solid var(--line); }
 .post img + em, .post p > img + em { display: block; font-size: .85rem; color: var(--muted); font-style: normal; }
+.jump { font-family: var(--sans); font-size: .9rem; color: var(--muted); }
