@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Working with AI taught me to verify twice | Domonick Thompson</title>
+<meta name="description" content="Banks call it maker-checker: one makes, another checks. Here one AI built it, a second AI checked it, and I checked the checker.">
+<meta property="og:site_name" content="Domonick Thompson">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Working with AI taught me to verify twice">
+<meta property="og:description" content="Banks call it maker-checker: one makes, another checks. Here one AI built it, a second AI checked it, and I checked the checker.">
+<meta property="og:url" content="https://x8hunta.github.io/work/ai-verify-twice.html">
+<meta property="og:image" content="https://x8hunta.github.io/og/work-ai-verify-twice.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="../index.html">Domonick Thompson</a>
+  <nav><a href="../index.html" aria-current="page">Home</a><a href="../blog/index.html">Blog</a><a href="../about.html">About</a><a href="../proof.html">Proof</a></nav>
+</header>
+<main>
+<article class="post">
+<p class="meta">November 8, 2026 <span class="tag">Training lab</span></p>
+<h1>Working with AI taught me to verify twice</h1>
+<p class="lede">Banks call it maker-checker: one makes, another checks. Here one AI built it, a second AI checked it, and I checked the checker.</p>
+<h2>The story</h2>
+<p>I write up each network lab as a slide deck, and an AI helps build them. So I asked a second AI (Gemma) to compare each deck with the text I had approved. Twice, on two decks, the same thing happened:</p>
+<ul>
+<li>It got every hard fact right: addresses, ports, ping results, commands.</li>
+<li>It found wording I never approved. The first AI had quietly added its own headings and labels. On the second deck, about nine lines got through.</li>
+<li>Most of what it called &ldquo;missing&rdquo; wasn&rsquo;t missing. On the first deck, all 10 items were there. On the second, 5 of 9 were.</li>
+</ul>
+<p>So the second AI is useful, but only as a second opinion that a person checks. That&rsquo;s why my decks now say &ldquo;wording review pending&rdquo; until I sign off.</p>
+<h2>What it proves</h2>
+<p>A second AI is worth running, and its output still needs checking.</p>
+<h2>What it doesn&rsquo;t prove yet</h2>
+<ul>
+<li>Two runs, two decks, one model. That&rsquo;s a pattern to watch, not a measured result.</li>
+<li>The first run&rsquo;s exact prompt wasn&rsquo;t saved. The second run&rsquo;s was.</li>
+<li>Many false &ldquo;missing&rdquo; items came from how the text was pulled out of the slides, not only from the AI.</li>
+</ul>
+<h2>For network people</h2>
+<p>gemma4:31b-cloud through the Ollama API, text only, temperature 0. Three checks: text in the deck that isn&rsquo;t approved, approved text missing from the deck, and facts (IPs, masks, gateways, interfaces, ping counts, commands). The raw output and the triage are published with each deck&rsquo;s verification record.</p>
+<h2>Check the work</h2>
+<p>Code, test runs and records: <a href="../proof/ai-verify-twice.zip">ai-verify-twice.zip</a>. How to check it: <a href="../proof.html">Proof</a>.</p>
+<p class="back"><a href="../index.html">All work</a></p>
+</article>
+</main>
+<footer class="site-footer">
+  <p>Domonick Thompson &middot; Digital asset management for networks</p>
+</footer>
+</body>
+</html>

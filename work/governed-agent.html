@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A network fixer that has to ask permission first | Domonick Thompson</title>
+<meta name="description" content="An automated tool spots a misconfigured computer, proposes the fix, and waits. Nothing changes until a person approves it, and every step is written down.">
+<meta property="og:site_name" content="Domonick Thompson">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A network fixer that has to ask permission first">
+<meta property="og:description" content="An automated tool spots a misconfigured computer, proposes the fix, and waits. Nothing changes until a person approves it, and every step is written down.">
+<meta property="og:url" content="https://x8hunta.github.io/work/governed-agent.html">
+<meta property="og:image" content="https://x8hunta.github.io/og/work-governed-agent.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="../index.html">Domonick Thompson</a>
+  <nav><a href="../index.html" aria-current="page">Home</a><a href="../blog/index.html">Blog</a><a href="../about.html">About</a><a href="../proof.html">Proof</a></nav>
+</header>
+<main>
+<article class="post">
+<p class="meta">November 6, 2026 <span class="tag">Simulated</span></p>
+<h1>A network fixer that has to ask permission first</h1>
+<p class="lede">An automated tool spots a misconfigured computer, proposes the fix, and waits. Nothing changes until a person approves it, and every step is written down.</p>
+<h2>The story</h2>
+<p>Automation is fast, and fast mistakes spread. So this tool is only allowed to do three things on its own: notice, suggest and wait.</p>
+<p>It keeps an official record of how every computer on the network should be set up, and compares it with how each one is actually running. When a computer drifts, say it has lost its network address, the tool flags it and proposes the fix from the record. Then it stops.</p>
+<p>Try to apply the fix before anyone approves it, and the tool refuses. Once a person approves, it applies the fix, checks the network against the record again, and the problem turns from red to green on a 3D map. Every step, including every refusal, goes into a history log that can&rsquo;t be edited or deleted.</p>
+<h2>What it proves</h2>
+<p>The approval gate works:</p>
+<ul>
+<li>An unapproved fix is refused (the server answers &ldquo;409 Conflict&rdquo;).</li>
+<li>An approved fix clears the problem.</li>
+<li>A fix that&rsquo;s already been decided can&rsquo;t be approved or rejected again.</li>
+<li>The history log refuses edits and deletes, and survives a reset of the demo.</li>
+</ul>
+<h2>What it doesn&rsquo;t prove yet</h2>
+<ul>
+<li>It runs on a simulated network, not real equipment.</li>
+<li>The &ldquo;fixer&rdquo; follows fixed rules. There is no AI in it yet.</li>
+<li>The approver is a fixed name, not a real login.</li>
+<li>When a fix is waiting, nobody is notified. Someone has to look.</li>
+</ul>
+<h2>For network people</h2>
+<p>The register holds intended L3 config for two /29 subnets and is the source of truth. A detector reconciles live state against it and logs findings; the agent turns findings into proposals; an apply gate refuses anything not approved. The audit table is append-only, enforced by database triggers. FastAPI, SQLite, vanilla JS, 3d-force-graph. Test case: a host with no IP, mask or gateway, taken from a routed troubleshooting lab.</p>
+<h2>Check the work</h2>
+<p>Code, test runs and records: <a href="../proof/governed-agent.zip">governed-agent.zip</a>. How to check it: <a href="../proof.html">Proof</a>.</p>
+<p class="back"><a href="../index.html">All work</a></p>
+</article>
+</main>
+<footer class="site-footer">
+  <p>Domonick Thompson &middot; Digital asset management for networks</p>
+</footer>
+</body>
+</html>

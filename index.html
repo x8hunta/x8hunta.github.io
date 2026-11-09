@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Domonick Thompson</title>
-<meta name="description" content="From technician to governance architect">
+<meta name="description" content="Digital asset management for networks">
 <meta property="og:site_name" content="Domonick Thompson">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Domonick Thompson">
-<meta property="og:description" content="From technician to governance architect">
+<meta property="og:description" content="Digital asset management for networks">
 <meta property="og:url" content="https://x8hunta.github.io/">
 <meta property="og:image" content="https://x8hunta.github.io/og/default.png">
 <meta property="og:image:width" content="1200">
@@ -19,14 +20,37 @@
 <body>
 <header class="site-header">
   <a class="brand" href="index.html">Domonick Thompson</a>
-  <nav><a href="index.html" aria-current="page">Home</a><a href="blog/index.html">Blog</a><a href="about.html">About</a></nav>
+  <nav><a href="index.html" aria-current="page">Home</a><a href="blog/index.html">Blog</a><a href="about.html">About</a><a href="proof.html">Proof</a></nav>
 </header>
 <main>
-<section class="hero"><h1>From technician to governance architect</h1>
-<p>I started out fixing things: building out offices, deploying networks, tracking fleets and inventory. This site documents the move from fixing the incident to governing the whole class of failure.</p>
-<p>Each article comes from a challenge I worked through. It takes a real or simulated failure, shows the technician&rsquo;s fix, then designs the governance control that would have stopped it, and explains how to prove that control works.</p>
-<p class="cta"><a href="blog/the-ghost-server.html">New here? Start with the first article</a></p></section>
-<h2>Latest articles</h2>
+<section class="hero"><h1>I give every network device a <span class="grad">digital record</span> you can trust and see.</h1>
+<p>What it is, how it should be set up, and how it&rsquo;s actually running. When those drift apart, my tools catch it, show it on a live map, and keep the evidence so anyone can check.</p>
+<p><em>Digital asset management for networks.</em> BSc ICT (Network Engineering and Security). Kingston, Jamaica.</p>
+<p class="pills"><a class="primary" href="proof.html">Check the work</a><a href="mailto:domonickthompson36@gmail.com">Email</a><a href="https://www.linkedin.com/in/domonick-t-a5183040a">LinkedIn</a></p>
+
+<ul class="stats">
+<li><a href="proof.html"><b>3</b>proof bundles, signed</a></li>
+<li><a href="proof.html"><b>13</b>unit tests passing on released code</a></li>
+<li><a href="proof.html"><b>0</b>secrets found in the release scan</a></li>
+</ul>
+
+</section>
+<h2>Work</h2>
+<ul class="cards"><li class="card">
+  <p class="meta">November 6, 2026 <span class="tag">Simulated</span></p>
+  <h3><a href="work/governed-agent.html">A network fixer that has to ask permission first</a></h3>
+  <p>An automated tool spots a misconfigured computer, proposes the fix, and waits. Nothing changes until a person approves it, and every step is written down.</p>
+</li><li class="card">
+  <p class="meta">November 8, 2026 <span class="tag">Training lab</span></p>
+  <h3><a href="work/ai-verify-twice.html">Working with AI taught me to verify twice</a></h3>
+  <p>Banks call it maker-checker: one makes, another checks. Here one AI built it, a second AI checked it, and I checked the checker.</p>
+</li><li class="card">
+  <p class="meta">August 19, 2026 <span class="tag">Training lab</span></p>
+  <h3><a href="work/attack-defense-sandbox.html">Attack and Defense Sandbox: I broke into my own trading app, then made sure I&#x27;d get caught</a></h3>
+  <p>A fake trading app with fake money, attacked by my own scripts. First nothing caught the attacks. After the fixes, every attack set off an alert in under a second.</p>
+</li></ul>
+
+<h2>Writing</h2>
 <ul class="cards"><li class="card">
   <p class="meta">October 5, 2026 <span class="tag">Nature/Climate</span><span class="tag">Real-world autopsy</span></p>
   <h3><a href="blog/the-phantom-forest.html">The Phantom Forest: Why a Baseline Can&#x27;t Be Audited Like a Balance</a></h3>
@@ -43,9 +67,15 @@
   <p>A drug maker passes every audit while technicians fake calibration data. When audits check the paperwork instead of the asset, compliance becomes a performance.</p>
 </li></ul>
 <p><a href="blog/index.html">All articles</a></p>
+<h2>Also built</h2>
+<ul>
+<li><strong>Network lab write-ups:</strong> real faults from network troubleshooting labs, each closed with the control that stops it happening again.</li>
+<li><strong>A security monitoring lab (Wazuh)</strong> with certificate-managed setup and a monitored machine enrolled.</li>
+<li><strong>A sealed IoT botnet lab:</strong> fake infected devices on an isolated network, used to practise detection.</li>
+</ul>
 </main>
 <footer class="site-footer">
-  <p>Domonick Thompson &middot; From technician to governance architect</p>
+  <p>Domonick Thompson &middot; Digital asset management for networks</p>
 </footer>
 </body>
 </html>

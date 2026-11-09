@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Attack and Defense Sandbox: I broke into my own trading app, then made sure I&#x27;d get caught | Domonick Thompson</title>
+<meta name="description" content="A fake trading app with fake money, attacked by my own scripts. First nothing caught the attacks. After the fixes, every attack set off an alert in under a second.">
+<meta property="og:site_name" content="Domonick Thompson">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Attack and Defense Sandbox: I broke into my own trading app, then made sure I&#x27;d get caught">
+<meta property="og:description" content="A fake trading app with fake money, attacked by my own scripts. First nothing caught the attacks. After the fixes, every attack set off an alert in under a second.">
+<meta property="og:url" content="https://x8hunta.github.io/work/attack-defense-sandbox.html">
+<meta property="og:image" content="https://x8hunta.github.io/og/work-attack-defense-sandbox.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="../index.html">Domonick Thompson</a>
+  <nav><a href="../index.html" aria-current="page">Home</a><a href="../blog/index.html">Blog</a><a href="../about.html">About</a><a href="../proof.html">Proof</a></nav>
+</header>
+<main>
+<article class="post">
+<p class="meta">August 19, 2026 <span class="tag">Training lab</span></p>
+<h1>Attack and Defense Sandbox: I broke into my own trading app, then made sure I&#x27;d get caught</h1>
+<p class="lede">A fake trading app with fake money, attacked by my own scripts. First nothing caught the attacks. After the fixes, every attack set off an alert in under a second.</p>
+<h2>The story</h2>
+<p>I built a small trading app with made-up accounts and ran three attacks against it, the way real intruders get in with &ldquo;valid&rdquo; logins:</p>
+<ul>
+<li>guessing passwords until one works,</li>
+<li>using an API key that should have expired,</li>
+<li>having an admin quietly switch a dead account back on.</li>
+</ul>
+<p><strong>Before:</strong> the app wrote everything to its log, but nobody was alerted. The expired key and the revived account went completely unnoticed. A log nobody reads protects no one.</p>
+<p><strong>After:</strong> I added controls and ran the same attacks again. Password guessing was blocked and alerted. The expired key was rejected and alerted. Reviving the dead account set off an alert. Each one fired in under a second.</p>
+<p><strong>The first attempt failed, and that&rsquo;s in here too.</strong> In an earlier exercise I stole and replayed a login cookie. My network sensor saw nothing, because it couldn&rsquo;t see traffic between the containers. A security camera pointed at the wrong room.</p>
+<h2>What it proves</h2>
+<p>Those three attacks are now detected in this lab, measured before and after. The 13 unit tests for the controls pass on the released code.</p>
+<h2>What it doesn&rsquo;t prove yet</h2>
+<ul>
+<li>An alert isn&rsquo;t a block. The dead account still comes back; now someone hears about it. (The <a href="governed-agent.html">network fixer</a> is my answer to that: make it ask first.)</li>
+<li>The code has an extra check that requires MFA before a dead account can be revived, and its unit test passes. But the lab app ran with that check switched off.</li>
+<li>Lab only, with fake data, and my own scripts as the attacker.</li>
+<li>The cookie-theft exercise found its gaps but hasn&rsquo;t been re-tested after fixes.</li>
+<li>One check (a login from a new IP address) was tested in code, not re-run as an attack.</li>
+</ul>
+<h2>For network people</h2>
+<p>MITRE ATT&amp;CK T1078 (Valid Accounts) and T1539 (Steal Web Session Cookie). Docker lab, Flask mock API, Python middleware, Zeek. Built with AI help; the finished playbooks are saved as reusable skills for my AI assistant.</p>
+<h2>Check the work</h2>
+<p>Code, test runs and records: <a href="../proof/attack-defense-sandbox.zip">attack-defense-sandbox.zip</a>. How to check it: <a href="../proof.html">Proof</a>.</p>
+<p class="back"><a href="../index.html">All work</a></p>
+</article>
+</main>
+<footer class="site-footer">
+  <p>Domonick Thompson &middot; Digital asset management for networks</p>
+</footer>
+</body>
+</html>
