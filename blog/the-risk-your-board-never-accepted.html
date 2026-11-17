@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Risk Your Board Never Accepted: How an On-Budget Refresh Left Four Branches Exposed | Domonick Thompson</title>
+<meta name="description" content="A network refresh closes on budget because four branches were quietly cut from scope. The board approved the money but never accepted the risk. The fix is an approval that sends scope changes back to the board.">
+<meta property="og:site_name" content="Domonick Thompson">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Risk Your Board Never Accepted: How an On-Budget Refresh Left Four Branches Exposed">
+<meta property="og:description" content="A network refresh closes on budget because four branches were quietly cut from scope. The board approved the money but never accepted the risk. The fix is an approval that sends scope changes back to the board.">
+<meta property="og:url" content="https://x8hunta.github.io/blog/the-risk-your-board-never-accepted.html">
+<meta property="og:image" content="https://x8hunta.github.io/og/the-risk-your-board-never-accepted.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="../index.html">Domonick Thompson</a>
+  <nav><a href="../index.html">Home</a><a href="../blog/index.html" aria-current="page">Blog</a><a href="../about.html">About</a><a href="../proof.html">Proof</a></nav>
+</header>
+<main>
+<article class="post">
+
+<p class="meta">November 17, 2026 &middot; Challenge 10 <span class="tag">Finance</span><span class="tag">Simulated scenario</span></p>
+<h1>The Risk Your Board Never Accepted: How an On-Budget Refresh Left Four Branches Exposed</h1>
+<blockquote>
+<p>The project came in on budget. The question for the board is what was cut to get it there, and who decided.</p>
+</blockquote>
+<h2>What happened</h2>
+<p><em>This is a simulated scenario I designed for practice. The insurer, the people and the figures are invented, and it is not based on any client or employer work. It is set in a market with a floating local currency. Where the currency is pegged, the same squeeze can come from freight or a vendor price rise.</em></p>
+<p>A mid-sized Caribbean insurer has 12 branches. Its network switches and firewalls reach the end of vendor support in 14 months. After that, the vendor stops publishing security fixes. The branch switches carry customer payments and policy data to head office.</p>
+<p>The insurer&rsquo;s risk policy reserves the acceptance of material technology risk to the board. Early in the year, the board approved 60 million in local currency to replace the equipment. The figure came from a vendor quote priced in US dollars, valid for 30 days, and converted at that month&rsquo;s exchange rate.</p>
+<p>Then three things happened:</p>
+<ul>
+<li>Internal sign-off took 7 weeks, and the quote expired.</li>
+<li>Only one local partner was authorised to supply the equipment. Its re-quote came in 9% higher in local currency, from exchange-rate movement and freight.</li>
+<li>The approved figure was a hard ceiling. To stay inside it, the CIO dropped the switches at 4 of the 12 branches and planned to &ldquo;catch them next budget year.&rdquo;</li>
+</ul>
+<p>The project closed on budget. The final report to the board said &ldquo;infrastructure refresh complete.&rdquo;</p>
+<p>A few months later, vendor support for the old switches ended. Every month after that, the vulnerability scanner flagged the four that were still running. Every month the ticket was closed with the same note: &ldquo;Hardware scheduled for replacement under refresh project.&rdquo; That was true when the project was approved. It stopped being true at the scope cut.</p>
+<p>The switches&rsquo; admin interfaces could also be reached from the branch staff network.</p>
+<h2>The technician&rsquo;s view</h2>
+<p>Four switches are unpatched and their admin interfaces are exposed. Replace them next year and lock down the admin access.</p>
+<p>That fixes four switches. It doesn&rsquo;t explain how the board came to believe the work was done.</p>
+<h2>The architect&rsquo;s view</h2>
+<p>This is a failure of <strong>decision rights</strong>. Leaving four branches on unsupported equipment is a material technology risk, and the insurer&rsquo;s own policy reserved accepting it to the board. The CIO made the decision instead, under budget pressure. After that, each person who closed a scanner ticket made the same decision again. Nobody with the authority to accept the risk ever saw it.</p>
+<p>The root sits at the <strong>Plan</strong> stage of the asset lifecycle. The board&rsquo;s approval set a ceiling but gave no instruction for what happens when reality breaks it. The failure surfaced at <strong>Acquire</strong>, when scope was cut, and did its damage in <strong>Operate</strong>, when the exposure ran unnoticed.</p>
+<p>The pillar that failed is <strong>metadata</strong>: the records about the assets. The closeout report and the ticket notes described a state that no longer existed. When the record and reality disagree, reality is the truth and the record is the finding. The ownership and access layer held up: the board&rsquo;s authority was clearly written down. The record of what had been done was what failed.</p>
+<p><strong>Why the board should care:</strong> those four switches carry customer payments and policy data. A compromise there can lead to fraud loss, a breach the insurer may have to report under data protection law, and questions from its regulator about why a known risk was never put in front of the board.</p>
+<p><em>Not covered here:</em> the old switches removed from the other eight branches. Disposal is its own lifecycle stage, a legal and administrative process, and a separate exercise.</p>
+<h2>What an attacker sees</h2>
+<p><em>Simulated attack path, mapped to MITRE ATT&amp;CK.</em></p>
+<ol>
+<li>A phishing email reaches a customer service officer at one of the four branches (T1566, Phishing), who opens the attachment and runs the payload (T1204, User Execution).</li>
+<li>From that workstation the attacker can reach the old switch&rsquo;s admin interface. Its firmware has a published flaw, and with vendor support over, no fix is coming. The attacker uses the flaw to take over the switch (T1210, Exploitation of Remote Services).</li>
+<li>Every branch transaction passes through that switch. The attacker can capture traffic (T1040, Network Sniffing) and alter the switch&rsquo;s software to stay hidden (T1601, Modify System Image).</li>
+</ol>
+<p>The scanner was already flagging the switch every month. The alert had been explained away.</p>
+<h2>The control</h2>
+<p><strong>Bounded Approval with Expiring Exceptions.</strong> What it requires:</p>
+<ol>
+<li><strong>A change-control threshold.</strong> The approval lists the scope, asset by asset, as well as the amount. Cost movement up to an agreed percentage is covered from a contingency held by the CFO, and every drawdown is logged. Anything beyond it, or any change of scope, needs board re-approval before money is committed. Finance enforces this: no purchase order is released unless it matches the approved asset list, and each check leaves a record.</li>
+<li><strong>An independent closeout check.</strong> At closeout, the approved asset list is compared with the asset register and with what is physically installed. Internal audit, not the project team, does the site visits. With a dozen branches, that means all of them. Any mismatch goes to the board.</li>
+<li><strong>A formal risk acceptance register.</strong> Every known vulnerability that isn&rsquo;t fixed has a named owner with authority, a reason that is still true, and an expiry date. A material risk, like unsupported network equipment, goes to the board from the first acceptance. The owner can&rsquo;t be the person whose budget or project gains from leaving it open. When the date passes, or the project it depends on closes, the issue reopens automatically. A second renewal goes to the board.</li>
+<li><strong>Isolated admin access.</strong> Network equipment is managed from a separate network that only a hardened admin machine can reach, with multi-factor sign-in and logged sessions. If the first three controls fail, an old device still isn&rsquo;t one step from a staff desk.</li>
+</ol>
+<h2>How to prove it works</h2>
+<ul>
+<li><strong>Purchase order checks</strong> match orders against the approved asset list both ways. An order outside the list, or an approved asset with no order, is a finding unless the board re-approved it.</li>
+<li><strong>The contingency log</strong> shows every drawdown against the agreed threshold.</li>
+<li><strong>The closeout report</strong> lists approved assets, delivered assets and internal audit&rsquo;s site-visit results for every branch.</li>
+<li><strong>Each month</strong>, the risk acceptance register is compared with the scanner&rsquo;s findings. Every open issue needs a current entry, and every reason is checked against reality.</li>
+<li><strong>A planted test</strong>: record a test exception tied to a project that has already closed. If it doesn&rsquo;t reopen, the register is paperwork only.</li>
+<li><strong>Each quarter</strong>, from the staff network at every branch, try to reach the admin interfaces of the switches and firewalls. Every attempt must fail, and the results are kept as a test record.</li>
+</ul>
+<h2>Three questions for your next board meeting</h2>
+<ol>
+<li>What did we approve, asset by asset, and what was actually delivered?</li>
+<li>Which risks are we carrying on purpose, who accepted each one, and when does each acceptance expire?</li>
+<li>Can a staff computer reach the admin interface of our network equipment?</li>
+</ol>
+<h2>Takeaway</h2>
+<p>An on-budget project can hide a scope cut. Approving the money isn&rsquo;t the same as accepting the risk. Write the approval so that any change of scope comes back to the people who own the risk, and check the delivered assets, not just the spend.</p>
+<h2>References</h2>
+<ul>
+<li><strong>Risk acceptance (control 3):</strong> ISO/IEC 27001:2022 clause 6.1.3 f (risk owners approve the treatment plan and accept residual risk).</li>
+<li><strong>Asset inventory (controls 1 and 2):</strong> ISO/IEC 27001:2022 Annex A 5.9 (inventory of information and other associated assets); CIS Controls v8 Safeguard 1.1 (enterprise asset inventory).</li>
+<li><strong>Vulnerability handling (control 3):</strong> ISO/IEC 27001:2022 Annex A 8.8 (management of technical vulnerabilities); CIS Controls v8 Safeguard 7.2 (remediation process).</li>
+<li><strong>Isolated admin access (control 4):</strong> ISO/IEC 27001:2022 Annex A 8.22 (segregation of networks).</li>
+<li><strong>Attack path:</strong> MITRE ATT&amp;CK Enterprise techniques T1566, T1204, T1210, T1040, T1601.</li>
+</ul>
+<p class="back"><a href="index.html">All articles</a></p>
+</article>
+</main>
+<footer class="site-footer">
+  <p>Domonick Thompson &middot; Digital asset management for networks</p>
+</footer>
+</body>
+</html>
