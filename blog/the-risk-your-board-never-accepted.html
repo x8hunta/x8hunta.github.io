@@ -57,8 +57,9 @@
 <ol>
 <li>A phishing email reaches a customer service officer at one of the four branches (T1566, Phishing), who opens the attachment and runs the payload (T1204, User Execution).</li>
 <li>From that workstation the attacker can reach an old switch&rsquo;s admin interface. Its firmware has a published flaw, and with vendor support over, no fix is coming. The attacker uses the flaw to take over the switch (T1210, Exploitation of Remote Services).</li>
-<li>Branch transactions pass through that switch. The attacker can capture traffic (T1040, Network Sniffing) and alter the switch&rsquo;s software to stay hidden (T1601, Modify System Image).</li>
+<li>Branch transactions pass through that switch. The attacker copies its configuration, which maps the branch network and can hold passwords (T1602, Data from Configuration Repository), and captures the traffic passing through it (T1040, Network Sniffing).</li>
 </ol>
+<p>The path is simulated. The behaviour isn&rsquo;t. In August 2025, Cisco Talos reported a Russian state-sponsored group that &ldquo;targets unpatched, and often end-of-life, network devices,&rdquo; then copies their configurations and captures the traffic passing through them. In 2023, US and UK agencies warned that Russian military intelligence was getting into &ldquo;poorly maintained Cisco routers&rdquo; through weak SNMP settings.</p>
 <p>The scanner was already flagging the switch every month. The alert had been explained away.</p>
 <h2>The control</h2>
 <p><strong>Bounded Approval with Expiring Exceptions.</strong> What it requires:</p>
@@ -66,7 +67,7 @@
 <li><strong>A change-control threshold.</strong> The approval lists the scope, asset by asset, as well as the amount. Cost movement up to an agreed percentage is covered from a contingency held by the CFO, and every drawdown is logged. Anything beyond it, or any change of scope, needs board re-approval before money is committed. Finance enforces this: no purchase order is released unless it matches the approved asset list, and each check leaves a record.</li>
 <li><strong>An independent closeout check.</strong> At closeout, the approved asset list is compared with the asset register and with what is physically installed. Internal audit, not the project team, does the site visits. With a dozen branches, that means all of them. Any mismatch goes to the board.</li>
 <li><strong>A formal risk acceptance register.</strong> Every known vulnerability that isn&rsquo;t fixed has a named owner with authority, a reason that is still true, and an expiry date. A material risk, like unsupported network equipment, goes to the board from the first acceptance. The owner can&rsquo;t be the person whose budget or project gains from leaving it open. When the date passes, or the project it depends on closes, the issue reopens automatically. A second renewal goes to the board.</li>
-<li><strong>Isolated admin access.</strong> Network equipment is managed from a separate network that only a hardened admin machine can reach, with multi-factor sign-in and logged sessions. If the first three controls fail, an old device still isn&rsquo;t one step from a staff desk.</li>
+<li><strong>Isolated admin access.</strong> Network equipment is managed from a separate network that only a hardened admin machine can reach, with multi-factor sign-in and logged sessions. Management traffic uses encrypted protocols only, such as SSH and SNMPv3. If the first three controls fail, an old device still isn&rsquo;t one step from a staff desk.</li>
 </ol>
 <h2>How to prove it works</h2>
 <ul>
@@ -75,7 +76,7 @@
 <li><strong>The closeout report</strong> lists approved assets, delivered assets and internal audit&rsquo;s site-visit results for every branch.</li>
 <li><strong>Each month</strong>, the risk acceptance register is compared with the scanner&rsquo;s findings. Every open issue needs a current entry, and every reason is checked against reality.</li>
 <li><strong>A planted test</strong>: record a test exception tied to a project that has already closed. If it doesn&rsquo;t reopen, the register is paperwork only.</li>
-<li><strong>Each quarter</strong>, from the staff network at every branch, try to reach the admin interfaces of the switches and firewalls. Every attempt must fail, and the results are kept as a test record.</li>
+<li><strong>Each quarter</strong>, from the staff network at every branch, try to reach every management service on the switches and firewalls: the admin interfaces, SNMP, and vendor setup services such as Cisco Smart Install. Every attempt must fail, and the results are kept as a test record.</li>
 </ul>
 <h2>Three questions for your next board meeting</h2>
 <ol>
@@ -88,10 +89,11 @@
 <h2>References</h2>
 <ul>
 <li><strong>Risk acceptance (control 3):</strong> ISO/IEC 27001:2022 clause 6.1.3 f (risk owners approve the treatment plan and accept residual risk).</li>
-<li><strong>Asset inventory (controls 1 and 2):</strong> ISO/IEC 27001:2022 Annex A 5.9 (inventory of information and other associated assets); CIS Controls v8 Safeguard 1.1 (enterprise asset inventory).</li>
-<li><strong>Vulnerability handling (control 3):</strong> ISO/IEC 27001:2022 Annex A 8.8 (management of technical vulnerabilities); CIS Controls v8 Safeguard 7.2 (remediation process).</li>
-<li><strong>Isolated admin access (control 4):</strong> ISO/IEC 27001:2022 Annex A 8.22 (segregation of networks).</li>
-<li><strong>Attack path:</strong> MITRE ATT&amp;CK Enterprise techniques T1566, T1204, T1210, T1040, T1601.</li>
+<li><strong>Asset inventory (controls 1 and 2):</strong> ISO/IEC 27001:2022 Annex A 5.9 (inventory of information and other associated assets); CIS Controls v8 Safeguard 1.1 (enterprise asset inventory); NIST SP 800-53 Rev. 5 CM-8 (system component inventory).</li>
+<li><strong>Vulnerability handling (control 3):</strong> ISO/IEC 27001:2022 Annex A 8.8 (management of technical vulnerabilities); CIS Controls v8 Safeguard 7.2 (remediation process), 7.7 (remediate detected vulnerabilities) and 12.1 (network infrastructure up to date).</li>
+<li><strong>Isolated admin access (control 4):</strong> ISO/IEC 27001:2022 Annex A 8.22 (segregation of networks); CIS Controls v8 Safeguards 12.8 (dedicated administrative computing resources), 6.5 (MFA for administrative access) and 12.6 (secure network management protocols).</li>
+<li><strong>Attack path:</strong> MITRE ATT&amp;CK Enterprise techniques T1566, T1204, T1210, T1602, T1040. Technique-to-control links checked against the MITRE Center for Threat-Informed Defense Mappings Explorer (CIS Controls v8.1.2 and NIST SP 800-53 Rev. 5 mappings).</li>
+<li><strong>Threat evidence:</strong> Cisco Talos, &ldquo;Static Tundra&rdquo; (2025); CISA advisory AA23-108 (2023).</li>
 </ul>
 <p class="back"><a href="index.html">All articles</a></p>
 </article>
