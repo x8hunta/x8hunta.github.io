@@ -41,23 +41,23 @@
 <li>The approved figure was a hard ceiling. To stay inside it, the CIO dropped the switches at 4 of the 12 branches and planned to &ldquo;catch them next budget year.&rdquo;</li>
 </ul>
 <p>The project closed on budget. The final report to the board said &ldquo;infrastructure refresh complete.&rdquo;</p>
-<p>A few months later, vendor support for the old switches ended. Every month after that, the vulnerability scanner flagged the four that were still running. Every month the ticket was closed with the same note: &ldquo;Hardware scheduled for replacement under refresh project.&rdquo; That was true when the project was approved. It stopped being true at the scope cut.</p>
+<p>A few months later, vendor support for the old switches ended. Every month after that, the vulnerability scanner flagged the old switches still running at the four branches. Every month the ticket was closed with the same note: &ldquo;Hardware scheduled for replacement under refresh project.&rdquo; That was true when the project was approved. It stopped being true at the scope cut.</p>
 <p>The switches&rsquo; admin interfaces could also be reached from the branch staff network.</p>
 <h2>The technician&rsquo;s view</h2>
-<p>Four switches are unpatched and their admin interfaces are exposed. Replace them next year and lock down the admin access.</p>
-<p>That fixes four switches. It doesn&rsquo;t explain how the board came to believe the work was done.</p>
+<p>The switches at four branches are unpatched and their admin interfaces are exposed. Replace them next year and lock down the admin access.</p>
+<p>That fixes the switches. It doesn&rsquo;t explain how the board came to believe the work was done.</p>
 <h2>The architect&rsquo;s view</h2>
 <p>This is a failure of <strong>decision rights</strong>. Leaving four branches on unsupported equipment is a material technology risk, and the insurer&rsquo;s own policy reserved accepting it to the board. The CIO made the decision instead, under budget pressure. After that, each person who closed a scanner ticket made the same decision again. Nobody with the authority to accept the risk ever saw it.</p>
 <p>The root sits at the <strong>Plan</strong> stage of the asset lifecycle. The board&rsquo;s approval set a ceiling but gave no instruction for what happens when reality breaks it. The failure surfaced at <strong>Acquire</strong>, when scope was cut, and did its damage in <strong>Operate</strong>, when the exposure ran unnoticed.</p>
 <p>The pillar that failed is <strong>metadata</strong>: the records about the assets. The closeout report and the ticket notes described a state that no longer existed. When the record and reality disagree, reality is the truth and the record is the finding. The ownership and access layer held up: the board&rsquo;s authority was clearly written down. The record of what had been done was what failed.</p>
-<p><strong>Why the board should care:</strong> those four switches carry customer payments and policy data. A compromise there can lead to fraud loss, a breach the insurer may have to report under data protection law, and questions from its regulator about why a known risk was never put in front of the board.</p>
+<p><strong>Why the board should care:</strong> the switches at those four branches carry customer payments and policy data. A compromise there can lead to fraud loss, a breach the insurer may have to report under data protection law, and questions from its regulator about why a known risk was never put in front of the board.</p>
 <p><em>Not covered here:</em> the old switches removed from the other eight branches. Disposal is its own lifecycle stage, a legal and administrative process, and a separate exercise.</p>
 <h2>What an attacker sees</h2>
 <p><em>Simulated attack path, mapped to MITRE ATT&amp;CK.</em></p>
 <ol>
 <li>A phishing email reaches a customer service officer at one of the four branches (T1566, Phishing), who opens the attachment and runs the payload (T1204, User Execution).</li>
-<li>From that workstation the attacker can reach the old switch&rsquo;s admin interface. Its firmware has a published flaw, and with vendor support over, no fix is coming. The attacker uses the flaw to take over the switch (T1210, Exploitation of Remote Services).</li>
-<li>Every branch transaction passes through that switch. The attacker can capture traffic (T1040, Network Sniffing) and alter the switch&rsquo;s software to stay hidden (T1601, Modify System Image).</li>
+<li>From that workstation the attacker can reach an old switch&rsquo;s admin interface. Its firmware has a published flaw, and with vendor support over, no fix is coming. The attacker uses the flaw to take over the switch (T1210, Exploitation of Remote Services).</li>
+<li>Branch transactions pass through that switch. The attacker can capture traffic (T1040, Network Sniffing) and alter the switch&rsquo;s software to stay hidden (T1601, Modify System Image).</li>
 </ol>
 <p>The scanner was already flagging the switch every month. The alert had been explained away.</p>
 <h2>The control</h2>
